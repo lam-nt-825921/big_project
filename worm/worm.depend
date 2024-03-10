@@ -1,7 +1,9 @@
 # depslib dependency file v1.0
-1710090748 source:c:\users\hello\documents\github\big_project\worm\main.cpp
+1710095836 source:c:\users\hello\documents\github\big_project\worm\main.cpp
 	<iostream>
 	"TextureManager.h"
+	<string>
+	<cstring>
 
 1706832967 c:\users\hello\documents\github\big_project\dev\sdl2\include\sdl2\sdl.h
 	"SDL_main.h"

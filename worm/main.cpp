@@ -1,6 +1,8 @@
 
 #include <iostream>
 #include "TextureManager.h"
+#include <string>
+#include <cstring>
 
 
 SDL_Window* window;
@@ -38,7 +40,9 @@ int main( int argc, char* args[] )
 
     TextureManager::init();
 
-    bool quit = false;
+    bool quit = false, writing = false;
+    char* write = new char;
+    *write = '-';
 
     SDL_Event e;
 
@@ -46,24 +50,65 @@ int main( int argc, char* args[] )
     {
         while( SDL_PollEvent( &e ) != 0 )
         {
-            if( e.type == SDL_QUIT )
+            switch (e.type)
             {
-                quit = true;
+            case SDL_QUIT:
+                quit = false;
+                std::cout<<quit<<'\n';
+                SDL_Quit();
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                if(!writing)
+                {
+                    writing = true;
+                    delete write;
+                    write = new char;
+                    *write = '-';
+                }
+                break;
+            case SDL_TEXTINPUT:
+                if(writing)
+                {
+                    char* text = e.text.text;
+                    char* tmp = write;
+                    int len= std::strlen(tmp);
+                    write = new char[len + 1];
+                    std::strcpy(write,tmp);
+                    delete tmp;
+                    write[len]=*text;
+                    delete text;
+
+                }
+                break;
+            case SDL_KEYDOWN:
+                if(e.key.keysym.sym == SDLK_TAB)
+                {
+                    std::cout<<writing<<'\n';
+                    if(writing)
+                    {
+                        writing = false;
+                    }
+                    std::cout<<'-'<<writing<<'\n';
+                }
+
+                break;
+            default:
+                break;
             }
-            else
+            if(write)
             {
-
-
-
-
-                texture = TextureManager::LoadTextTexture(renderer," ",src);
-                dest = src;
-                dest.x = 50;
-                dest.y = 50;
-                SDL_RenderClear(renderer);
-                TextureManager::DrawTexture(renderer,texture,src,dest);
-                SDL_RenderPresent(renderer);
+                    texture = TextureManager::LoadTextTexture(renderer,write,src);
+                    dest = src;
+                    dest.x = 50;
+                    dest.y = 50;
             }
+
+
+
+            SDL_RenderClear(renderer);
+            TextureManager::DrawTexture(renderer,texture,src,dest);
+            SDL_RenderPresent(renderer);
+
         }
 
 
@@ -78,3 +123,4 @@ int main( int argc, char* args[] )
 
     return 0;
 }
+

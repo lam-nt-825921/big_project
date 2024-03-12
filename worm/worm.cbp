@@ -38,8 +38,16 @@
 			<Add directory="C:/Users/Hello/Documents/GitHub/big_project/Dev/SDL2/lib" />
 			<Add directory="C:/Users/Hello/Documents/GitHub/big_project/Dev/TTF/lib" />
 		</Linker>
+		<Unit filename="Block.cpp" />
+		<Unit filename="Block.h" />
+		<Unit filename="Game.cpp" />
+		<Unit filename="Game.h" />
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
 		<Unit filename="TextureManager.cpp" />
 		<Unit filename="TextureManager.h" />
+		<Unit filename="Vector2D.cpp" />
+		<Unit filename="Vector2D.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

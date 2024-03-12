@@ -1,43 +1,51 @@
 #include "TextureManager.h"
 
 TTF_Font* TextureManager:: font = nullptr;
-SDL_Color TextureManager:: color = {50,50,50};
+SDL_Color TextureManager:: color = {255,255,255};
 
-void TextureManager:: init()
+void TextureManager:: SetSize(int x)
 {
-    TTF_Init();
-    font = TTF_OpenFont("font/font.ttf",28);
+    font = TTF_OpenFont("font/font.ttf",x);
 }
 
-SDL_Texture* TextureManager:: LoadTexture(SDL_Renderer* ren, const char* path)
+bool TextureManager:: init()
+{
+    if(TTF_Init() < 0) return false;
+    font = TTF_OpenFont("font/font.ttf",18);
+    if(font == nullptr) return false;
+    return true;
+}
+
+SDL_Texture* TextureManager:: LoadTexture( const char* path)
 {
 
     SDL_Surface* tmpSurface = SDL_LoadBMP(path);
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(ren,tmpSurface);
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer,tmpSurface);
     SDL_FreeSurface(tmpSurface);
     return tex;
 }
 
-SDL_Texture* TextureManager:: LoadTexture(SDL_Renderer* ren, const char* path,SDL_Rect& src)
+SDL_Texture* TextureManager:: LoadTexture( const char* path,SDL_Rect& src)
 {
     SDL_Surface* tmpSurface = SDL_LoadBMP(path);
     src = {0,0,tmpSurface->w,tmpSurface->h};
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(ren,tmpSurface);
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer,tmpSurface);
     SDL_FreeSurface(tmpSurface);
     return tex;
 }
 
-SDL_Texture* TextureManager:: LoadTextTexture(SDL_Renderer* ren, const char* path,SDL_Rect& src)
+SDL_Texture* TextureManager:: LoadTextTexture( const char* path,SDL_Rect& src)
 {
 
     SDL_Surface* tmpSurface = TTF_RenderText_Solid(font,path,color);
     src = {0,0,tmpSurface->w,tmpSurface->h};
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(ren,tmpSurface);
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer,tmpSurface);
     SDL_FreeSurface(tmpSurface);
     return tex;
+
 }
 
-void TextureManager:: DrawTexture(SDL_Renderer* ren,SDL_Texture* tex,SDL_Rect src, SDL_Rect dest)
+void TextureManager:: DrawTexture(SDL_Texture* tex,SDL_Rect src, SDL_Rect dest)
 {
-    SDL_RenderCopy(ren,tex,&src,&dest);
+    SDL_RenderCopy(Game::renderer,tex,&src,&dest);
 }

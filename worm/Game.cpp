@@ -22,8 +22,8 @@ bool Game::Init()
 {
 
     bullet = new worm;
-    bullet->SetAni("image/bullet.bmp",2,200);
-    bullet->init(2,"image/bullet.bmp",2,200);
+    bullet->SetAni("image/n_worm.bmp",4,100);
+    bullet->init(2,"image/bullet.bmp",3,150);
     bullet->SetPos(50,700);
     bullet->SetASP(2000);
 
@@ -33,7 +33,8 @@ bool Game::Init()
 
 void Game::Input()
 {
-    bullet->SetTimer();
+    bullet->GetTimer();
+    bullet->input();
 
     SDL_PollEvent(&Window::event);
 

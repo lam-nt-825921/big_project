@@ -76,9 +76,9 @@ void Object::SetAni(const char* path,int _fr, int mpf, int num )
     SetTex(path);
 }
 
-void Object:: SetTimer()
+int Object:: SetTimer()
 {
-    timer_change = SDL_GetTicks();
+    return timer_change = SDL_GetTicks();
 }
 
 void Object:: SetAct(int x)
@@ -86,7 +86,7 @@ void Object:: SetAct(int x)
     Act = x;
 }
 
-bool Collision(SDL_Rect A, SDL_Rect B)
+bool Object:: _Collision(SDL_Rect A, SDL_Rect B)
 {
     return !(A.x > B.x + B.w||
              A.y > B.y + B.h||

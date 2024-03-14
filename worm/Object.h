@@ -7,7 +7,6 @@ class Object
 private:
     SDL_Rect dest,src;
     SDL_Texture* texture;
-    int height, width;
     int frames, msPF, numA;
     int phase = 0, Act = 0;
     int last_change = 0;
@@ -16,6 +15,7 @@ private:
 public:
 
 
+    int height, width;
 
     Object() = default;
     Object(const char* path);
@@ -30,11 +30,11 @@ public:
     void SetSrc(SDL_Rect _src);
     void SetTex(const char* path);
     void SetAni(const char* path,int _fr= 1, int mpf = 100, int num = 1);
-    void SetTimer();
+    int SetTimer();
     void SetAct(int x);
 
     void Draw();
 
-    bool Collision(SDL_Rect A, SDL_Rect B);
+    bool _Collision(SDL_Rect A, SDL_Rect B);
 
 };

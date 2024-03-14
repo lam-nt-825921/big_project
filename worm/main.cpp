@@ -25,6 +25,7 @@ int main( int argc, char* args[] )
     menu->AddTag("Start");
     menu->AddTag("Exit");
 
+
     while(menu->isRunning)
     {
         menu->input();
@@ -33,7 +34,7 @@ int main( int argc, char* args[] )
         case 1:
         {
             game->Init();
-            const int FPS =120;
+            const int FPS =60;
             const int frameDelay=1000/FPS;
             Uint32 frameStart;
             int frameTime;

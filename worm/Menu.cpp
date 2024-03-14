@@ -1,9 +1,31 @@
 #include "Menu.h"
 
+
 void Menu::init()
 {
-    AddTag("");
 
+    if(SDL_Init(SDL_INIT_EVERYTHING)==0)
+    {
+        std::cout<<"init\n";
+        Window::window = SDL_CreateWindow("Menu game con sau",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,Window::Width,Window::Height,false);
+        if(Window::window != nullptr)
+        {
+            std::cout<<"window\n";
+            Window::renderer = SDL_CreateRenderer(Window::window,-1,0);
+            if(Window::renderer != nullptr)
+            {
+                std::cout<<"renderer\n";
+                SDL_SetRenderDrawColor(Window::renderer, 0, 20, 40, 255);
+                if(TextureManager:: init())
+                {
+                    std::cout<<"texture manager\n";
+                    isRunning = true;
+                }
+            }
+        }
+    }
+    TextureManager::init();
+    AddTag("");
 
     isRunning = true;
 }
@@ -11,17 +33,17 @@ void Menu::init()
 void Menu:: input()
 {
 
-    if(SDL_PollEvent(& Game::event)!=0)
+    SDL_PollEvent(&Window::event);
+
+    switch(Window::event.type)
     {
-        switch(Game::event.type)
-        {
-        case SDL_QUIT:
-            isRunning = false;
-            break;
-        default:
-            break;
-        }
+    case SDL_QUIT:
+        isRunning = false;
+        break;
+    default:
+        break;
     }
+
 }
 
 int Menu:: update()
@@ -39,7 +61,7 @@ int Menu:: update()
 
 void Menu:: render()
 {
-    SDL_RenderClear(Game:: renderer);
+    SDL_RenderClear( Window::renderer);
 
 
 
@@ -50,12 +72,15 @@ void Menu:: render()
     }
 
 
-    SDL_RenderPresent(Game:: renderer);
+    SDL_RenderPresent(Window::renderer);
 }
 
 void Menu:: close()
 {
     for(auto& t : tags)delete t;
+    SDL_DestroyWindow(Window::window);
+    SDL_DestroyRenderer(Window::renderer);
+    SDL_Quit();
 }
 ///----------------------------
 

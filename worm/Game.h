@@ -9,17 +9,25 @@
 #include <string>
 #include "Vector2D.h"
 
+class Window
+{
+public:
+
+    static int Width;
+    static int Height;
+    static SDL_Window* window;
+    static SDL_Renderer* renderer;
+    static SDL_Event event;
+};
+
+
 class Game
 {
 private:
 
 public:
 
-    int Width;
-    int Height;
-    static SDL_Window* window;
-    static SDL_Renderer* renderer;
-    static SDL_Event event;
+
     static bool isRunning;
 
     bool isWriting = false;

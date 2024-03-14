@@ -4,16 +4,23 @@
 
 
 
+int Window:: Width = 500;
+int Window::Height = 800;
+SDL_Window* Window::window = nullptr;
+SDL_Renderer* Window::renderer = nullptr;
+SDL_Event Window::event;
+
+
+
 
 int main( int argc, char* args[] )
 {
     Game* game = new Game();
-    game->Init();
 
     Menu* menu = new Menu;
     menu->init();
 
-    menu->SetPos(game->Width/2, game->Height/3);
+    menu->SetPos(Window::Width/2, Window::Height/3);
 
     menu->AddTag("Start");
     menu->AddTag("Exit");
@@ -25,14 +32,25 @@ int main( int argc, char* args[] )
         {
         case 1:
         {
-            game->isRunning = true;
+            game->Init();
+            const int FPS =120;
+            const int frameDelay=1000/FPS;
+            Uint32 frameStart;
+            int frameTime;
             while(game->isRunning)
             {
-
+                frameStart=SDL_GetTicks();
                 game->Input();
                 game->Update();
                 game->Render();
+                frameTime=SDL_GetTicks()-frameStart;
+                if(frameTime<frameDelay)
+                {
+                    SDL_Delay(frameDelay-frameTime);
+                }
             }
+            game->Close();
+
         }
             break;
         case 2:
@@ -43,7 +61,6 @@ int main( int argc, char* args[] )
         }
         menu->render();
     }
-    game->Close();
     menu->close();
     delete menu;
 

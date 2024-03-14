@@ -44,11 +44,17 @@
 		<Unit filename="Game.h" />
 		<Unit filename="Menu.cpp" />
 		<Unit filename="Menu.h" />
+		<Unit filename="Object.cpp" />
+		<Unit filename="Object.h" />
 		<Unit filename="TextureManager.cpp" />
 		<Unit filename="TextureManager.h" />
 		<Unit filename="Vector2D.cpp" />
 		<Unit filename="Vector2D.h" />
+		<Unit filename="bullet.cpp" />
+		<Unit filename="bullet.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="worm.cpp" />
+		<Unit filename="worm.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

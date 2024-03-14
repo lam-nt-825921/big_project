@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "Menu.h"
 
 
 Block::Block()
@@ -27,15 +28,12 @@ void Block::init(const char* path, std::string T)
 void Block:: update()
 {
     if(type == "BG")return;
-    switch(Game::event.type)
+    switch(Window::event.type)
     {
-    case SDL_QUIT:
-        Game::isRunning = false;
-        break;
+
     case SDL_MOUSEMOTION:
         {
-            SDL_Rect pos = {Game::event.motion.x,Game::event.motion.y,1,1};
-            //std::cout<<Game::event.motion.x<<' '<<Game::event.motion.y<<'\n';
+            SDL_Rect pos = {Window::event.motion.x,Window::event.motion.y,1,1};
 
             if(!touch && Collision(dest,pos))
             {
@@ -83,6 +81,7 @@ void Block:: SetText(std::string path)
     Text = path;
     TextureManager::SetSize(15);
     text = TextureManager::LoadTextTexture(Text.c_str(),tsrc);
+
     tdest = tsrc;
 
 }

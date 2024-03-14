@@ -1,5 +1,10 @@
 #pragma once
-#include "Game.h"
+#include <SDL.h>
+#include <iostream>
+#include "TextureManager.h"
+#include <cstring>
+#include <fstream>
+#include <string>
 
 class Block
 {

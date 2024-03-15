@@ -56,10 +56,7 @@ void worm:: input()
                 SetStop(false);
                 lastAttack = timerAttack;
             }
-        }
-        else if(isFree == true && _Collision(GetDest(),{Window::event.button.x,Window::event.button.y,1,1}))
-        {
-            isTake = true;
+            else Erase();
         }
     }
 
@@ -95,8 +92,8 @@ void worm:: update(int x,int y)
 
 void worm:: render()
 {
-    for(auto& b : listBullet)b->render();
     Draw();
+   // for(auto& b : listBullet)b->render();
 }
 
 void worm:: GetTimer()
@@ -128,4 +125,7 @@ bool worm:: Erase()
     listBullet.clear();
 }
 
-
+bool worm::GetFree()
+{
+    return isFree;
+}

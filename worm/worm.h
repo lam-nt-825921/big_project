@@ -9,7 +9,7 @@ private:
     int ASP = 1000;
     int lastAttack = 0;
     int timerAttack = 0;
-    bool isTake = false;
+    bool isTake = true;
     bool isFree = true;
 
     std::vector<Bullet*>listBullet;
@@ -25,8 +25,11 @@ public:
     void render();
 
     void GetTimer();
+    bool GetFree();
+
     void SetASP(int x);
     void SetPos(int x, int y);
+
 
     std::vector<Bullet*>& GetBullet();
 

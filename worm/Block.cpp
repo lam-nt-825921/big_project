@@ -19,10 +19,10 @@ void Block:: init(const char* path)
     SetSkin(path);
 }
 
-void Block::init(const char* path, std::string T)
+void Block::init(const char* path, std::string T,int sz)
 {
     SetSkin(path);
-    SetText(T);
+    SetText(T,sz);
 }
 
 void Block:: update()
@@ -74,15 +74,17 @@ void Block:: SetSkin(const char* path)
     skin = TextureManager::LoadTexture(path,src);
     dest.w = src.w*scale;
     dest.h = src.h*scale;
+    if(text && dest.w <tdest.w + 20)dest.w = tdest.w + 20;
 }
 
-void Block:: SetText(std::string path)
+void Block:: SetText(std::string path,int sz)
 {
     Text = path;
-    TextureManager::SetSize(15);
+    TextureManager::SetSize(sz);
     text = TextureManager::LoadTextTexture(Text.c_str(),tsrc);
 
     tdest = tsrc;
+    if(dest.w <tdest.w + 20)dest.w = tdest.w + 20;
 
 }
 

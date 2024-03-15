@@ -1,14 +1,13 @@
 #include "Game.h"
 #include "Vector2D.h"
 #include "worm.h"
+#include "Block.h"
 
 bool Game:: isRunning = false;
 std::vector<Bullet*> Game:: wormBullet;
 std::vector<worm*> Game:: worms;
 
-worm *bullet;
-worm *bullet1;
-worm *bullet2;
+Block *n_worms;
 
 Object *BG;
 
@@ -28,24 +27,9 @@ bool Game::Init()
     BG = new Object;
     BG -> SetAni("image/Game_BG.bmp");
 
-    bullet = new worm;
-    bullet->SetAni("image/n_worm.bmp",4,100);
-    bullet->init(2,"image/bullet.bmp",3,150);
-    bullet->SetPos(50,700);
-    bullet->SetASP(2000);
-
-    bullet1 = new worm;
-    bullet1->SetAni("image/n_worm.bmp",4,100);
-    bullet1->init(2,"image/bullet.bmp",3,150);
-    bullet1->SetPos(50,600);
-    bullet1->SetASP(2000);
-
-    bullet2 = new worm;
-    bullet2->SetAni("image/n_worm.bmp",4,100);
-    bullet2->init(2,"image/bullet.bmp",3,150);
-    bullet2->SetPos(50,500);
-    bullet2->SetASP(2000);
-
+    n_worms = new Block;
+    n_worms->init("image/Board.bmp", "normal worm",10);
+    n_worms->SetPos(65,702);
 
     isRunning = true;
     return isRunning;
@@ -99,6 +83,20 @@ void Game::Input()
 
 void Game::Update()
 {
+    n_worms->update();
+    if(n_worms->isChosed == true)
+    {
+
+        if(worms.empty()||worms.back()->GetFree()==false)
+        {
+            worm* w = new worm;
+            w->SetAni("image/n_worm.bmp",4,100);
+            w->init(2,"image/bullet.bmp",3,150);
+            w->SetPos(Window::event.button.x, Window::event.button.y);
+            w->SetASP(2000);
+        }
+        n_worms->isChosed = false;
+    }
 
     auto it = worms.begin();
     while (it != worms.end())
@@ -122,6 +120,8 @@ void Game::Render()
     SDL_RenderClear(Window::renderer);
 
     BG->Draw();
+
+    n_worms->render();
     for(int y = 1;y<=12; y++)
     {
         if(SDL_RenderDrawLine(Window::renderer,0,800 - y*64,500,800-y*64)!=0)std::cout<<SDL_GetError()<<'\n';
@@ -144,11 +144,15 @@ void Game::Render()
             ++it;
         }
     }
+
+    for(auto& b: wormBullet)b -> render();
+
     SDL_RenderPresent(Window::renderer);
 }
 
 void Game::Close()
 {
+    delete n_worms;
     for(auto& w: worms)delete w;
     for(auto& b: wormBullet)delete b;
     wormBullet.clear();

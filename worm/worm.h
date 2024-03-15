@@ -11,9 +11,13 @@ private:
     int timerAttack = 0;
     bool isTake = false;
     bool isFree = true;
+
     std::vector<Bullet*>listBullet;
 
 public:
+
+    worm();
+    bool isExist = true;
 
     void init(int x, const char* path, int fr = 1,int ms = 100, int num = 1);
     void input();
@@ -25,4 +29,6 @@ public:
     void SetPos(int x, int y);
 
     std::vector<Bullet*>& GetBullet();
+
+    bool Erase();
 };

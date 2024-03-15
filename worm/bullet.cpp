@@ -7,6 +7,7 @@ void Bullet:: spawn(int x,int y)
     SetDest_x(x_spawn);
     SetDest_y(y_spawn);
     isSpawn = true;
+    SetStop(false);
 }
 
 void Bullet:: update(int x, int y)
@@ -32,4 +33,9 @@ void Bullet:: render()
 bool Bullet:: isCreated()
 {
     return isSpawn;
+}
+
+bool Bullet:: Erase()
+{
+    isExist = false;
 }

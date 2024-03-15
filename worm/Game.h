@@ -8,6 +8,9 @@
 #include <fstream>
 #include <string>
 #include "Vector2D.h"
+#include "bullet.h"
+#include "Object.h"
+#include "worm.h"
 
 class Window
 {
@@ -27,7 +30,8 @@ private:
 
 public:
 
-
+    static std::vector<Bullet*> wormBullet;
+    static std::vector<worm*> worms;
     static bool isRunning;
 
     bool isWriting = false;

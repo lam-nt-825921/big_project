@@ -11,6 +11,7 @@ private:
     int phase = 0, Act = 0;
     int last_change = 0;
     int timer_change = 0;
+    bool Stop = true;
 
 public:
 
@@ -19,6 +20,7 @@ public:
 
     Object() = default;
     Object(const char* path);
+
 
     SDL_Rect GetDest();
     SDL_Rect GetSrc();
@@ -32,6 +34,7 @@ public:
     void SetAni(const char* path,int _fr= 1, int mpf = 100, int num = 1);
     int SetTimer();
     void SetAct(int x);
+    void SetStop(bool x);
 
     void Draw();
 

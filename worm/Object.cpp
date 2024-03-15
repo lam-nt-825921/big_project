@@ -6,6 +6,8 @@ Object:: Object(const char* path)
     SetAni(path);
 }
 
+
+
 SDL_Rect Object:: GetDest()
 {
     return dest;
@@ -65,6 +67,7 @@ void Object:: Draw()
         src.y = Act * height;
     }
     //std::cout<<src.x<<" "<<src.y<<" "<<src.w<<" "<<src.h<<'\n';
+    if(Stop)src.x = 0;
     TextureManager::DrawTexture(texture,src,dest);
 }
 
@@ -92,4 +95,9 @@ bool Object:: _Collision(SDL_Rect A, SDL_Rect B)
              A.y > B.y + B.h||
              B.x > A.x + A.w||
              B.y > A.y + A.h);
+}
+
+void Object:: SetStop(bool x)
+{
+    Stop = x;
 }

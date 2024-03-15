@@ -9,6 +9,7 @@ private:
     bool isSpawn = false;
     int power = 1;
     double speed = 0.2;
+    bool isExist = true;
 public:
 
     void spawn(int x = -100,int y = -100);
@@ -16,5 +17,5 @@ public:
     void del();
     void render();
     bool isCreated();
-
+    bool Erase();
 };

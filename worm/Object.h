@@ -36,8 +36,9 @@ public:
     void SetAct(int x);
     void SetStop(bool x);
 
-    void Draw();
+    void Draw(bool x = false);
 
     bool _Collision(SDL_Rect A, SDL_Rect B);
+    bool Collision(SDL_Rect A);
 
 };

@@ -11,6 +11,7 @@
 #include "bullet.h"
 #include "Object.h"
 #include "worm.h"
+#include "enemy.h"
 
 class Window
 {
@@ -32,6 +33,7 @@ public:
 
     static std::vector<Bullet*> wormBullet;
     static std::vector<worm*> worms;
+    static std::vector<enemy*> enemys;
     static bool isRunning;
 
     bool isWriting = false;

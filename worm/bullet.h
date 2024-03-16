@@ -7,7 +7,7 @@ class Bullet: public Object
 private:
     int x_spawn,y_spawn;
     bool isSpawn = false;
-    int power = 1;
+    double power = 20;
     double speed = 0.2;
     bool isExist = true;
 public:
@@ -18,4 +18,11 @@ public:
     void render();
     bool isCreated();
     bool Erase();
+
+    void SetPower(double pw);
+    void SetSpeed(double sp);
+
+    double GetPower();
+
+    bool IsExist();
 };

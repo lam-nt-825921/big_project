@@ -19,7 +19,7 @@ public:
     worm();
     bool isExist = true;
 
-    void init(int x, const char* path, int fr = 1,int ms = 100, int num = 1);
+    void init(int x, const char* path, double sp, double pw, int fr = 1,int ms = 100, int num = 1);
     void input();
     void update(int x = 0,int y = 0);
     void render();

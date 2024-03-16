@@ -39,3 +39,23 @@ bool Bullet:: Erase()
 {
     isExist = false;
 }
+
+void Bullet::SetPower(double pw)
+{
+    power = pw;
+}
+
+void Bullet::SetSpeed(double sp)
+{
+    speed = sp;
+}
+
+double Bullet::GetPower()
+{
+    return power;
+}
+
+bool Bullet:: IsExist()
+{
+    return isExist;
+}

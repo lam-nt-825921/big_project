@@ -6,13 +6,16 @@ worm::worm()
     Game::worms.push_back(this);
 }
 
-void worm:: init(int x, const char* path,int fr, int ms , int num )
+void worm:: init(int x, const char* path, double sp, double pw ,int fr, int ms , int num )
 {
     while(x--)
     {
         listBullet.push_back(new Bullet);
         Game::wormBullet.push_back(listBullet.back());
         listBullet.back()->SetAni(path,fr,ms,num);
+        listBullet.back()->SetSpeed(sp);
+        listBullet.back()->SetPower(pw);
+
     }
 }
 
@@ -81,7 +84,7 @@ void worm:: update(int x,int y)
     {
         for(auto& b : listBullet)if(!b->isCreated())
         {
-            b->spawn(GetDest().x + (GetDest().w - b->GetDest().w)/2, GetDest().y);
+            b->spawn(GetDest().x + (GetDest().w - b->GetDest().w)/2, GetDest().y - b->GetDest().h);
             break;
         }
         lastAttack = timerAttack;

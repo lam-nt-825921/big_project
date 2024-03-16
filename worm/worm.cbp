@@ -52,6 +52,8 @@
 		<Unit filename="Vector2D.h" />
 		<Unit filename="bullet.cpp" />
 		<Unit filename="bullet.h" />
+		<Unit filename="enemy.cpp" />
+		<Unit filename="enemy.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="worm.cpp" />
 		<Unit filename="worm.h" />

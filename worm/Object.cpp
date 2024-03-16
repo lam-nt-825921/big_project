@@ -57,8 +57,12 @@ void Object:: SetTex(const char* path)
     dest = src = {0,0,width,height};
 }
 
-void Object:: Draw()
+void Object:: Draw(bool x)
 {
+    if(x)
+    {
+        std::cout<<timer_change-last_change<<' '<<phase<<' '<<msPF<<'\n';
+    }
     if(timer_change - last_change >= msPF)
     {
         last_change = timer_change;
@@ -95,6 +99,11 @@ bool Object:: _Collision(SDL_Rect A, SDL_Rect B)
              A.y > B.y + B.h||
              B.x > A.x + A.w||
              B.y > A.y + A.h);
+}
+
+bool Object:: Collision(SDL_Rect A)
+{
+    return _Collision(dest,A);
 }
 
 void Object:: SetStop(bool x)

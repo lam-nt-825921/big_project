@@ -32,12 +32,13 @@ void enemy::input()
 
 void enemy::update()
 {
+    timerAttack = Game::timer;
     if(isLive == false)return;
     if(isAtack)
     {
-        if(timerAttack - lastAttack >= ASP)
+        if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP)
         {
-            SetAct(0);
+            SetAct(1);
             isDealDame = true;
             lastAttack = timerAttack;
         }
@@ -48,15 +49,17 @@ void enemy::update()
         SetAct(0);
         yPos += rSpeed;
         SetDest_y(yPos);
+        if(yPos >= 800)Game::isRunning = false;
+
     }
     if(DameTaken > 0 )
     {
 
         rHp -= DameTaken;
-        std::cout<<rHp<<" auchi!\n";
         DameTaken = 0;
         if(rHp < 0)Kill();
     }
+
 }
 
 void enemy::render()
@@ -65,11 +68,7 @@ void enemy::render()
     Draw();
 }
 
-void enemy::GetTimer()
-{
-    timerAttack = SetTimer();
-  //  timerTakeDame = timerAttack;
-}
+
 
 bool enemy::GetIsLive()
 {
@@ -91,6 +90,11 @@ int enemy::GetStrong()
     return rStrong;
 }
 
+int enemy::GetNumAtack()
+{
+    return numAtack;
+}
+
 void enemy::SetDameTaken(double x)
 {
     if(armo>=0) DameTaken += x*(100.0/(100+armo));
@@ -107,12 +111,12 @@ void enemy::SetPos(int x, int y)
 void enemy::SetCol(int j)
 {
     inCollum = j;
-    SetPos(140 + j*64 + (64- GetDest().w)/2, 0);
+    SetPos(140 + j*60 + (60- GetDest().w)/2, 0);
 }
 
-bool enemy::DealAtack()
+bool enemy::GetDealAtack()
 {
-    return isAtack;
+    return isDealDame;
 }
 
 void enemy::SetIsAtack(bool a)
@@ -120,8 +124,15 @@ void enemy::SetIsAtack(bool a)
     isAtack = a;
 }
 
+void enemy::SetNumAtack(int a)
+{
+    numAtack = a;
+}
+
 void enemy::Kill()
 {
+    Game::money += 25;
+    Game::onGround[inCollum] = -1;
     isLive = false;
     return;
 }

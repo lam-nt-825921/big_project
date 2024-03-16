@@ -32,7 +32,6 @@ public:
     void SetSrc(SDL_Rect _src);
     void SetTex(const char* path);
     void SetAni(const char* path,int _fr= 1, int mpf = 100, int num = 1);
-    int SetTimer();
     void SetAct(int x);
     void SetStop(bool x);
 

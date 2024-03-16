@@ -34,12 +34,13 @@ int main( int argc, char* args[] )
         case 1:
         {
             game->Init();
-            const int FPS =60;
-            const int frameDelay=1000/FPS;
+
+            int frameDelay;
             Uint32 frameStart;
             int frameTime;
             while(game->isRunning)
             {
+                frameDelay=1000/Game::FPS;
                 frameStart=SDL_GetTicks();
                 game->Input();
                 game->Update();
@@ -50,6 +51,19 @@ int main( int argc, char* args[] )
                     SDL_Delay(frameDelay-frameTime);
                 }
             }
+            Block *endGame = new Block;
+
+            if(game->Win) endGame->init("image/Board.bmp","you win",30);
+            else endGame->init("image/Board.bmp","you lose",30);
+            endGame->SetPos(250,400);
+            while(endGame->isChosed == false)
+            {
+                SDL_PollEvent(&Window::event);
+                endGame->update();
+                endGame->render();
+                SDL_RenderPresent(Window::renderer);
+            }
+            delete endGame;
             game->Close();
 
         }

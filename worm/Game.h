@@ -31,10 +31,22 @@ private:
 
 public:
 
+    int Frame;
+    int last_spawn;
+    int numEnemys;
+    int Time;
+    int TimeStart;
+    std::vector<std::pair<double, int> > spawn;
+
+    static int FPS;
+    static int onGround[6];
+    static int timer;
+    static int money;
     static std::vector<Bullet*> wormBullet;
     static std::vector<worm*> worms;
     static std::vector<enemy*> enemys;
     static bool isRunning;
+    static bool Win;
 
     bool isWriting = false;
     std::string write = "";

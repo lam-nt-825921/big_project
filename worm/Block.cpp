@@ -84,7 +84,10 @@ void Block:: SetText(std::string path,int sz)
     text = TextureManager::LoadTextTexture(Text.c_str(),tsrc);
 
     tdest = tsrc;
+    tdest.x = dest.x + dest.w/2 - tsrc.w/2;
+    tdest.y = dest.y + dest.h/2 - tsrc.h/2;
     if(dest.w <tdest.w + 20)dest.w = tdest.w + 20;
+    if(dest.h <tdest.h + 20)dest.h = tdest.h + 20;
 
 }
 

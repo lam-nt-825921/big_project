@@ -7,6 +7,9 @@ class worm: public Object
 {
 private:
     int ASP = 1000;
+    int Hp = 1000;
+    int Col;
+
     int lastAttack = 0;
     int timerAttack = 0;
     bool isTake = true;
@@ -24,12 +27,13 @@ public:
     void update(int x = 0,int y = 0);
     void render();
 
-    void GetTimer();
     bool GetFree();
 
     void SetASP(int x);
+    void SetHp(int x);
     void SetPos(int x, int y);
 
+    void beAtacked(int dame);
 
     std::vector<Bullet*>& GetBullet();
 

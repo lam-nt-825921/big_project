@@ -59,18 +59,17 @@ void Object:: SetTex(const char* path)
 
 void Object:: Draw(bool x)
 {
+    timer_change = Game::timer;
     if(x)
     {
-        std::cout<<timer_change-last_change<<' '<<phase<<' '<<msPF<<'\n';
     }
-    if(timer_change - last_change >= msPF)
+    if((1000.0/Game::FPS)*(timer_change - last_change) >= msPF)
     {
         last_change = timer_change;
         phase = (phase + 1)%frames;
         src.x = phase * width;
         src.y = Act * height;
     }
-    //std::cout<<src.x<<" "<<src.y<<" "<<src.w<<" "<<src.h<<'\n';
     if(Stop)src.x = 0;
     TextureManager::DrawTexture(texture,src,dest);
 }
@@ -81,11 +80,6 @@ void Object::SetAni(const char* path,int _fr, int mpf, int num )
     msPF = mpf;
     numA = num;
     SetTex(path);
-}
-
-int Object:: SetTimer()
-{
-    return timer_change = SDL_GetTicks();
 }
 
 void Object:: SetAct(int x)

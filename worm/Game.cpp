@@ -1,15 +1,27 @@
 #include "Game.h"
 #include "Vector2D.h"
-
+#include <string>
 #include "Block.h"
+#include <fstream>
+#include <random>
+#include <time.h>
 
 
+///static declare
+int Game:: FPS = 60;
+int Game:: money = 150;
+int Game::timer = 0;
+int Game::onGround[6];
 bool Game:: isRunning = false;
+bool Game::Win = false;
 std::vector<Bullet*> Game:: wormBullet;
 std::vector<worm*> Game:: worms;
 std::vector<enemy*> Game:: enemys;
+//-------------------------------------
 
 Block *n_worms;
+Block *GameMoney;
+Block *GameTime;
 
 Object *BG;
 
@@ -27,18 +39,52 @@ Game::~Game()
 
 bool Game::Init()
 {
-    BG = new Object;
-    BG -> SetAni("image/Game_BG.bmp");
+    Frame = 0;
+    money = 150;
+    Win = false;
+    srand(time(NULL));
+    for(int i=0;i<6;i++)onGround[i] = 0;
+    {/// load level
+        last_spawn = 0;
 
-    enemy* a = new enemy;
-    a->SetAni("image/Green_worm.bmp",6,50,1);
-    a ->init(1000,0.2,1,60,1,1000);
-    a -> SetCol(0);
+        std::ifstream getEnemys("text/level1.txt"); // Open file for reading
 
-    n_worms = new Block;
-    n_worms->init("image/Board.bmp", "normal worm",10);
-    n_worms->SetPos(65,702);
+        getEnemys>>numEnemys;
+        spawn.resize(numEnemys);
+        for(int i=numEnemys ;i--;)
+        {
+            getEnemys >> spawn[i].first;
+            spawn[i].first*=1000;
+            getEnemys >> spawn[i].second;
+        }
+        getEnemys.close(); // Close the file
+    }
 
+    {/// init back ground
+        BG = new Object;
+        BG -> SetAni("image/Game_BG.bmp");
+    }
+
+
+
+    {/// init Block
+        n_worms = new Block;
+        n_worms->init("image/Board.bmp", "normal worm",10);
+        n_worms->SetPos(65,702);
+
+        GameMoney = new Block;
+        GameMoney->init("image/Board.bmp", "Money : " + std::to_string(money),10);
+        GameMoney->SetPos(65,50);
+
+        TimeStart = SDL_GetTicks();
+        Time = (SDL_GetTicks() - TimeStart)/1000;
+        GameTime = new Block;
+        GameTime->init("image/Board.bmp","Time : "+std::to_string(Time)+" s",18);
+        GameTime->SetPos(40, 150);
+
+
+    }
+///---- Game Start --------
     isRunning = true;
     return isRunning;
 }
@@ -46,8 +92,40 @@ bool Game::Init()
 void Game::Input()
 {
     SDL_PollEvent(&Window::event);
+    Frame++;
+    timer = Frame;
+    Time = (SDL_GetTicks() - TimeStart)/1000;
 
-    {/// Get time for enemys
+    if(Frame % 150 == 0)money += 10;
+
+    {///spawn enemys
+        if(numEnemys > 0 && (1000/FPS)*(timer - last_spawn) >= spawn.back().first)
+        {
+            last_spawn = timer;
+            switch(spawn.back().second)
+            {
+            case 1:
+                {
+                    enemy* e = new enemy;
+                    e->SetAni("image/enemy_1.bmp",6,120,2);
+                    e ->init(800,0.2,80,60,1,1000);//hp,speed,strong,armo,res,Atack Speed
+                    e -> SetCol(rand()%6);
+                }
+                break;
+            default:
+                break;
+            }
+            spawn.pop_back();
+            numEnemys--;
+        }
+
+        GameMoney->SetText("Money : " + std::to_string(money),10);
+        GameTime->SetText("Time : "+std::to_string(Time)+" s",18);
+    }
+
+
+    {/// input for enemys
+        for(int i = 0; i<6; i++)onGround[i] = 0;
         auto it = enemys.begin();
         while (it != enemys.end())
         {
@@ -58,13 +136,16 @@ void Game::Input()
             }
             else
             {
-                (*it) -> GetTimer();
+                int c = (*it)->inCollum;
+                if(onGround[c] <= 0 ||
+                   onGround[c] > (*it)->GetDest().y)
+                   onGround[c] = (*it)->GetDest().y;
                 ++it;
             }
         }
     }
 
-    {/// Get time and input for worms
+    {/// input for worms
         auto it = worms.begin();
         while (it != worms.end())
         {
@@ -75,7 +156,6 @@ void Game::Input()
             }
             else
             {
-                (*it) -> GetTimer();
                 (*it) -> input();
                 ++it;
             }
@@ -95,8 +175,9 @@ void Game::Input()
         case SDLK_ESCAPE:
             isRunning = false;
             break;
-        case SDLK_DOWN:
-
+        case SDLK_x:
+            if(FPS == 60)FPS =120;
+            else FPS = 60;
             break;
         default:
             break;
@@ -117,19 +198,22 @@ void Game::Update()
 
     {/// update block spawn worms
         n_worms->update();
-        if(n_worms->isChosed == true)
+        if(n_worms->isChosed == true && money >= 100)
         {
-
             if(worms.empty()||worms.back()->GetFree()==false)
             {
+                money -= 100;
                 worm* w = new worm;
                 w->SetAni("image/n_worm.bmp",4,120);
-                w->init(2,"image/bullet.bmp",0.2,100,3,150);
+                w->init(2,"image/bullet.bmp",0.2,200,3,150);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
                 w->SetPos(Window::event.button.x, Window::event.button.y);
                 w->SetASP(2000);
+                w->SetHp(1000);
             }
             n_worms->isChosed = false;
         }
+        GameMoney->update();
+        GameTime->update();
     }
 
     {/// update worms
@@ -170,11 +254,19 @@ void Game::Update()
                     b->del();
                 }
                 ///collision with worms
-                for(auto& w : worms)if(w->Collision((*it)->GetDest()))
+                int cnt = (*it) -> GetNumAtack();
+                bool IsAtack = (*it) ->GetDealAtack();
+                (*it)->SetIsAtack(false);
+                for(auto& w : worms)if(cnt > 0 && w->GetFree() == false && w->Collision((*it)->GetDest()))
                 {
                     (*it)->SetIsAtack(true);
-
+                    if(IsAtack)
+                    {
+                        w->beAtacked((*it)->GetStrong());
+                        cnt--;
+                    }
                 }
+
                 ++it;
             }
         }
@@ -199,6 +291,8 @@ void Game::Render()
 
     {/// render block spawn worms
         n_worms->render();
+        GameMoney->render();
+        GameTime->render();
     }
 
     {/// render worms
@@ -253,15 +347,23 @@ void Game::Render()
     }
 
     SDL_RenderPresent(Window::renderer);
+
+    if(enemys.size() == 0 && numEnemys <= 0)
+    {
+        Win = true;
+        isRunning = false;
+    }
 }
 
 void Game::Close()
 {
     delete n_worms;
+    for(auto& e: enemys)delete e;
     for(auto& w: worms)delete w;
     for(auto& b: wormBullet)delete b;
     wormBullet.clear();
     worms.clear();
+    enemys.clear();
 }
 
 bool Collision(const SDL_Rect &A,const SDL_Rect &B)

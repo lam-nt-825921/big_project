@@ -54,6 +54,7 @@
 		<Unit filename="bullet.h" />
 		<Unit filename="enemy.cpp" />
 		<Unit filename="enemy.h" />
+		<Unit filename="level1.txt" />
 		<Unit filename="main.cpp" />
 		<Unit filename="worm.cpp" />
 		<Unit filename="worm.h" />

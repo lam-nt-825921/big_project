@@ -21,8 +21,7 @@ void worm:: init(int x, const char* path, double sp, double pw ,int fr, int ms ,
 
 void worm:: input()
 {
-
-
+    timerAttack = Game::timer;
     if(Window::event.type == SDL_MOUSEMOTION)
     {
         if(isTake == true)
@@ -48,10 +47,9 @@ void worm:: input()
         y = 800 - (k+1)*64 + (64 - height)/2;
         if(isTake == true)
         {
-            std::cout<<"???\n";
-
-            if(x >= 80 + 60)
+            if(x >= 140)
             {
+                Col = (x - 140)/60;
                 SetDest_x(x);
                 SetDest_y(y);
                 isTake = false;
@@ -80,7 +78,8 @@ void worm:: input()
 void worm:: update(int x,int y)
 {
     if(isFree == true)return;
-    if(timerAttack - lastAttack >= ASP)
+    if(Game::onGround[Col] > 0 && Game::onGround[Col] < (GetDest().y) &&/// has enemy on lane
+       (1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP)/// ready bullet
     {
         for(auto& b : listBullet)if(!b->isCreated())
         {
@@ -99,15 +98,14 @@ void worm:: render()
    // for(auto& b : listBullet)b->render();
 }
 
-void worm:: GetTimer()
-{
-    timerAttack = SetTimer();
-    for(auto& b : listBullet)b->SetTimer();
-}
-
 void worm:: SetASP(int x)
 {
     ASP = x;
+}
+
+void worm:: SetHp(int x)
+{
+    Hp = x;
 }
 
 std::vector<Bullet*>& worm:: GetBullet()
@@ -120,6 +118,13 @@ void worm:: SetPos(int x, int y)
     SetDest_x(x);
     SetDest_y(y);
 }
+
+void worm::beAtacked(int dame)
+{
+    Hp-=dame;
+    if(Hp<0)Erase();
+}
+
 
 bool worm:: Erase()
 {

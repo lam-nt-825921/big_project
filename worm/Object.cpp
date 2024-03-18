@@ -5,7 +5,10 @@ Object:: Object(const char* path)
 {
     SetAni(path);
 }
-
+Object::~Object()
+{
+    SDL_DestroyTexture(texture);
+}
 
 
 SDL_Rect Object:: GetDest()
@@ -35,12 +38,12 @@ void Object:: SetDest(SDL_Rect _dest,bool t)
     else dest = _dest;
 }
 
-void  Object:: SetDest_x(int x)
+void  Object:: SetDest_x(short x)
 {
     dest.x = x;
 }
 
-void Object:: SetDest_y(int y)
+void Object:: SetDest_y(short y)
 {
     dest.y = y;
 }
@@ -74,7 +77,7 @@ void Object:: Draw(bool x)
     TextureManager::DrawTexture(texture,src,dest);
 }
 
-void Object::SetAni(const char* path,int _fr, int mpf, int num )
+void Object::SetAni(const char* path,short _fr, short mpf, short num )
 {
     frames = _fr;
     msPF = mpf;
@@ -82,7 +85,7 @@ void Object::SetAni(const char* path,int _fr, int mpf, int num )
     SetTex(path);
 }
 
-void Object:: SetAct(int x)
+void Object:: SetAct(short x)
 {
     Act = x;
 }

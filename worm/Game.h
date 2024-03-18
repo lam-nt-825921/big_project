@@ -12,13 +12,14 @@
 #include "Object.h"
 #include "worm.h"
 #include "enemy.h"
+#include "Block.h"
 
 class Window
 {
 public:
 
-    static int Width;
-    static int Height;
+    static short Width;
+    static short Height;
     static SDL_Window* window;
     static SDL_Renderer* renderer;
     static SDL_Event event;
@@ -31,26 +32,29 @@ private:
 
 public:
 
-    int Frame;
-    int last_spawn;
-    int numEnemys;
+    short Frame;
+    short last_spawn;
+    short numEnemys;
     int Time;
     int TimeStart;
-    std::vector<std::pair<double, int> > spawn;
+    std::vector<std::pair<float, short> > spawn;
 
     static int FPS;
-    static int onGround[6];
+    static short wormMap[6][11];
+    static short onGround[6];
     static int timer;
-    static int money;
+    static short money;
+
     static std::vector<Bullet*> wormBullet;
     static std::vector<worm*> worms;
     static std::vector<enemy*> enemys;
+
     static bool isRunning;
     static bool Win;
 
     bool isWriting = false;
     std::string write = "";
-    int temp = 0;
+    short temp = 0;
     SDL_Rect tmpSrc,tmpRect;
 
     Game();

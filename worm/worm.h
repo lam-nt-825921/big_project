@@ -6,12 +6,14 @@
 class worm: public Object
 {
 private:
-    int ASP = 1000;
-    int Hp = 1000;
-    int Col;
+    short ASP = 1000;
+    short Hp = 1000;
+    short Col;
+    short Row;
 
     int lastAttack = 0;
     int timerAttack = 0;
+    int timerSpawn = 0;
     bool isTake = true;
     bool isFree = true;
 
@@ -19,21 +21,24 @@ private:
 
 public:
 
+    short Cost = 100;
+
     worm();
+
     bool isExist = true;
 
-    void init(int x, const char* path, double sp, double pw, int fr = 1,int ms = 100, int num = 1);
+    void init(short x, const char* path, float sp, float pw, short fr = 1,short ms = 100, short num = 1,short slmt = 1);
     void input();
-    void update(int x = 0,int y = 0);
+    void update(short x = 0,short y = 0);
     void render();
 
     bool GetFree();
 
-    void SetASP(int x);
-    void SetHp(int x);
-    void SetPos(int x, int y);
+    void SetASP(short x);
+    void SetHp(short x);
+    void SetPos(short x, short y);
 
-    void beAtacked(int dame);
+    void beAtacked(short dame);
 
     std::vector<Bullet*>& GetBullet();
 

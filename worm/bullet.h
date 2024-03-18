@@ -5,24 +5,27 @@
 class Bullet: public Object
 {
 private:
-    int x_spawn,y_spawn;
+    short x_spawn,y_spawn;
     bool isSpawn = false;
-    double power = 20;
-    double speed = 0.2;
+    float power = 20;
+    float speed = 0.2;
     bool isExist = true;
+    short numDealDame = 1;
 public:
 
-    void spawn(int x = -100,int y = -100);
-    void update(int x = 0, int y = 0);
+    void spawn(short x = -100,short y = -100);
+    void update(short x = 0, short y = 0);
     void del();
     void render();
     bool isCreated();
     bool Erase();
 
-    void SetPower(double pw);
-    void SetSpeed(double sp);
+    void SetPower(float pw);
+    void SetSpeed(float sp);
+    void SetNumAtack(short x);
 
-    double GetPower();
+    float GetPower();
+    short GetNumAtack();
 
     bool IsExist();
 };

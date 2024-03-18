@@ -6,8 +6,8 @@
 class enemy: public Object
 {
 private:
-    int ASP = 1000;
-    int lastAttack = 0;
+    short ASP = 1000;
+    short lastAttack = 0;
     int timerAttack = 0;
     int lastTakeDame = 0;
     int timerTakeDame = 0;
@@ -15,48 +15,47 @@ private:
     bool isAtack = false;
     bool isDealDame = false;
 
-    double yPos = 0;
+    float yPos = 0;
 
-    int Hp = 1000;
-    double speed = 0.2;
-    int strong = 20;
-    int armo = 1;
-    int res = 1;
-    int numAtack = 1;
+    short Hp = 1000;
+    float speed = 0.2;
+    short strong = 20;
+    short armo = 1;
+    short numAtack = 1;
 
-    int rHp;
-    double rSpeed;
-    int rStrong;
-    int rArmo;
-    int rRes;
-    int rASP;
+    short rHp;
+    float rSpeed;
+    short rStrong;
+    short rArmo;
+    short rRes;
+    short rASP;
 
-    double DameTaken = 0;
+    float DameTaken = 0;
 
 public:
-    int inCollum = 0;
+    short inCollum = 0;
 
     enemy();
 
-    void init(int hp, double sp, int str, int ar, int re, int AtSP);
+    void init(short hp, float sp, short str, short ar, short AtSP);
     void input();
     void update();
     void render();
 
     bool GetIsLive();
     bool GetIsAtack();
-    int GetHp();
-    int GetStrong();
+    short GetHp();
+    short GetStrong();
 
-    int GetNumAtack();
+    short GetNumAtack();
     bool GetDealAtack();
 
 
-    void SetDameTaken(double x);
-    void SetPos(int x, int y);
-    void SetCol(int j);
+    void SetDameTaken(float x);
+    void SetPos(short x, short y);
+    void SetCol(short j);
     void SetIsAtack(bool a);
-    void SetNumAtack(int a);
+    void SetNumAtack(short a);
 
     void Kill();
 };

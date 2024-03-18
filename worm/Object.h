@@ -7,8 +7,8 @@ class Object
 private:
     SDL_Rect dest,src;
     SDL_Texture* texture;
-    int frames, msPF, numA;
-    int phase = 0, Act = 0;
+    short frames, msPF, numA;
+    short phase = 0, Act = 0;
     int last_change = 0;
     int timer_change = 0;
     bool Stop = true;
@@ -16,10 +16,11 @@ private:
 public:
 
 
-    int height, width;
+    short height, width;
 
     Object() = default;
     Object(const char* path);
+    ~Object();
 
 
     SDL_Rect GetDest();
@@ -27,12 +28,12 @@ public:
     SDL_Texture* GetTex();
 
     void SetDest(SDL_Rect _dest,bool t = false);
-    void SetDest_x(int x);
-    void SetDest_y(int y);
+    void SetDest_x(short x);
+    void SetDest_y(short y);
     void SetSrc(SDL_Rect _src);
     void SetTex(const char* path);
-    void SetAni(const char* path,int _fr= 1, int mpf = 100, int num = 1);
-    void SetAct(int x);
+    void SetAni(const char* path,short _fr= 1, short mpf = 100, short num = 1);
+    void SetAct(short x);
     void SetStop(bool x);
 
     void Draw(bool x = false);

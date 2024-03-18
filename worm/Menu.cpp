@@ -25,7 +25,7 @@ void Menu::init()
         }
     }
     TextureManager::init();
-    AddTag("");
+    AddTag(false,"BG");
 
     isRunning = true;
 }
@@ -46,33 +46,49 @@ void Menu:: input()
 
 }
 
-int Menu:: update()
+short Menu:: update()
 {
-
-    for(int i = 0, e = tags.size()-1; i<=e; i++)
+    if(listTags)
     {
-        if(i>0) tags[i]->SetPos(x_, y_ + i*(tags[i]->dest.h + 10));
-        tags[i]->update();
-        if(i>0&&tags[i]->isChosed) return i;
+        x_ = 250;
+        y_ = 800;
+        for(short i = 0, e = tags.size()-1; i<=e; i++)if(tags[i]->CanChose)
+        {
+            y_-= tags[i]->dest.h + 10;
+        }
 
+        y_/=2;
+        short cnt = 0;
+        for(short i = 0, e = tags.size()-1; i<=e; i++)
+        {
+            if(tags[i]->CanChose)
+            {
+                y_ += tags[i]->dest.h/2;
+                tags[i]->SetPos(x_, y_);
+                y_ += tags[i]->dest.h/2 + 10;
+            }
+            tags[i]->update();
+            if(tags[i]->CanChose && tags[i]->isChosed) return i;
+
+        }
+    }
+    else
+    {
+        for(short i = 0, e = tags.size()-1; i<=e; i++)
+        {
+            tags[i]->update();
+        }
     }
     return -1;
 }
 
 void Menu:: render()
 {
-    SDL_RenderClear( Window::renderer);
-
-
-
     for(auto& t : tags)
     {
         t->render();
         t->isChosed = false;
     }
-
-
-    SDL_RenderPresent(Window::renderer);
 }
 
 void Menu:: close()
@@ -84,21 +100,24 @@ void Menu:: close()
 }
 ///----------------------------
 
-void Menu:: AddTag(std::string Text)
+void Menu:: AddTag(bool chose,std::string Text,std::string type,const char* path, short sz)
 {
     tags.push_back(new Block);
-    if( tags.size()> 1 )tags.back()-> init("image/Board.bmp",Text);
+    if(Text != "BG")
+    {
+        tags.back()-> init(chose,path,Text,sz);//const char* path, std::string T,short sz
+        tags.back()->type = type;
+    }
     else
     {
-        tags.back()->type = "BG";
+        tags.back()-> init(false,"image/menu_BG.bmp");
+        tags.back()->type = type;
         tags.back()->SetScale(1);
-        tags.back()->SetPos(x_ , y_);
-        tags.back()-> init("image/menu_BG.bmp");
+        tags.back()->SetPos(250 , 400);
     }
 }
 
-void Menu:: SetPos(int x,int y)
+void Menu:: SetPos(short x,short y)
 {
-    x_=x;
-    y_=y;
+    tags.back()->SetPos(x,y);
 }

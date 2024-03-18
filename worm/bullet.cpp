@@ -1,6 +1,6 @@
 #include "bullet.h"
 
-void Bullet:: spawn(int x,int y)
+void Bullet:: spawn(short x,short y)
 {
     if( x > -100 ) x_spawn = x;
     if( y > -100 ) y_spawn = y;
@@ -10,9 +10,9 @@ void Bullet:: spawn(int x,int y)
     SetStop(false);
 }
 
-void Bullet:: update(int x, int y)
+void Bullet:: update(short x, short y)
 {
-    if(isSpawn)SetDest({int(speed*x),int(speed*y),0,0},true);
+    if(isSpawn)SetDest({short(speed*x),short(speed*y),0,0},true);
     SDL_Rect pos = GetDest();
     if(pos.x > 500 || pos.x < 0 ||
        pos.y > 800 || pos.y < 0)del();
@@ -40,19 +40,29 @@ bool Bullet:: Erase()
     isExist = false;
 }
 
-void Bullet::SetPower(double pw)
+void Bullet::SetPower(float pw)
 {
     power = pw;
 }
 
-void Bullet::SetSpeed(double sp)
+void Bullet::SetSpeed(float sp)
 {
     speed = sp;
 }
 
-double Bullet::GetPower()
+void Bullet:: SetNumAtack(short x)
+{
+    numDealDame = x;
+}
+
+float Bullet::GetPower()
 {
     return power;
+}
+
+short Bullet:: GetNumAtack()
+{
+    return numDealDame;
 }
 
 bool Bullet:: IsExist()

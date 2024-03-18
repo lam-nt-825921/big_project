@@ -6,20 +6,18 @@ enemy::enemy()
     Game::enemys.push_back(this);
 }
 
-void enemy::init(int hp, double sp, int str, int ar, int re, int AtSP)
+void enemy::init(short hp, float sp, short str, short ar, short AtSP)
 {
     Hp = hp;
     speed = sp;
     strong = str;
     armo = ar;
-    res = re;
     ASP = AtSP;
 
     rHp = Hp;
     rSpeed = speed;
     rStrong = strong;
     rArmo = armo;
-    rRes = res;
     rASP = ASP;
 
     SetStop(false);
@@ -80,35 +78,35 @@ bool enemy::GetIsAtack()
     return isAtack;
 }
 
-int enemy::enemy::GetHp()
+short enemy::enemy::GetHp()
 {
     return rHp;
 }
 
-int enemy::GetStrong()
+short enemy::GetStrong()
 {
     return rStrong;
 }
 
-int enemy::GetNumAtack()
+short enemy::GetNumAtack()
 {
     return numAtack;
 }
 
-void enemy::SetDameTaken(double x)
+void enemy::SetDameTaken(float x)
 {
     if(armo>=0) DameTaken += x*(100.0/(100+armo));
     if(armo<0) DameTaken += x*(2.0- 100.0/(100-armo));
 }
 
-void enemy::SetPos(int x, int y)
+void enemy::SetPos(short x, short y)
 {
     SetDest_x(x);
     SetDest_y(y);
     yPos = y;
 }
 
-void enemy::SetCol(int j)
+void enemy::SetCol(short j)
 {
     inCollum = j;
     SetPos(140 + j*60 + (60- GetDest().w)/2, 0);
@@ -124,7 +122,7 @@ void enemy::SetIsAtack(bool a)
     isAtack = a;
 }
 
-void enemy::SetNumAtack(int a)
+void enemy::SetNumAtack(short a)
 {
     numAtack = a;
 }

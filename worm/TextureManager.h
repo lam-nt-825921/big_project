@@ -13,10 +13,10 @@ public:
     static TTF_Font *font;
     static SDL_Color color;
     static bool init();
-    static void SetSize(int x);
+    static void SetSize(short x);
 
     static SDL_Texture* LoadTexture( const char* path);
-    static SDL_Texture* LoadTexture( const char* path, int &W,int &H, int fr, int num);
+    static SDL_Texture* LoadTexture( const char* path, short &W,short &H, short fr, short num);
     static SDL_Texture* LoadTexture( const char*path, SDL_Rect& src);
     static SDL_Texture* LoadTextTexture( const char* path, SDL_Rect& src);
 

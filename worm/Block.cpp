@@ -14,43 +14,59 @@ Block:: ~Block()
     SDL_DestroyTexture(text);
 }
 
-void Block:: init(const char* path)
+void Block:: init(bool Cch,const char* path)
 {
+    CanChose = Cch;
     SetSkin(path);
 }
 
-void Block::init(const char* path, std::string T,int sz)
+void Block::init(bool Cch, const char* path, std::string T,short sz)
 {
+    CanChose = Cch;
     SetSkin(path);
     SetText(T,sz);
 }
 
 void Block:: update()
 {
-    if(type == "BG")return;
+    if(CanChose == false)return;
     switch(Window::event.type)
     {
 
     case SDL_MOUSEMOTION:
         {
             SDL_Rect pos = {Window::event.motion.x,Window::event.motion.y,1,1};
-
             if(!touch && Collision(dest,pos))
             {
                 touch = true;
-                SetSkin("image/BoardChosed.bmp");
+                SetSkin(ChosedSkin);
             }
             if(touch && !Collision(dest,pos))
             {
                 touch = false;
-                SetSkin("image/Board.bmp");
+                SetSkin(UnchosedSkin);
             }
+
         }
         break;
     case SDL_MOUSEBUTTONDOWN:
-        if(touch)
         {
-            isChosed = true;
+            SDL_Rect pos = {Window::event.button.x,Window::event.button.y,1,1};
+            if(!touch && Collision(dest,pos))
+            {
+                touch = true;
+                SetSkin(ChosedSkin);
+            }
+            if(touch && !Collision(dest,pos))
+            {
+                touch = false;
+                SetSkin(UnchosedSkin);
+            }
+            if(touch)
+            {
+                isChosed = true;
+            }
+
         }
         break;
     default:
@@ -60,50 +76,58 @@ void Block:: update()
 
 void Block:: render()
 {
-    TextureManager::DrawTexture(skin,src,dest);
+    if(skin!=nullptr)TextureManager::DrawTexture(skin,src,dest);
 
-    if(Text!="")
-    {
-        TextureManager::DrawTexture(text,tsrc,tdest);
-    }
+    if(text!=nullptr)TextureManager::DrawTexture(text,tsrc,tdest);
 }
 ///------------------------------------------------------------------------------------
 
 void Block:: SetSkin(const char* path)
 {
     skin = TextureManager::LoadTexture(path,src);
+    if(skin == nullptr)return;
+    dest.x = xPos - dest.w/2;
+    dest.y = yPos - dest.h/2;
     dest.w = src.w*scale;
     dest.h = src.h*scale;
-    if(text && dest.w <tdest.w + 20)dest.w = tdest.w + 20;
+    if(text == nullptr)return;
+    if(dest.w <tdest.w + 20)dest.w = tdest.w + 20;
 }
 
-void Block:: SetText(std::string path,int sz)
+void Block:: SetText(std::string path,short sz)
 {
     Text = path;
     TextureManager::SetSize(sz);
     text = TextureManager::LoadTextTexture(Text.c_str(),tsrc);
 
+    if(text == nullptr)return;
     tdest = tsrc;
-    tdest.x = dest.x + dest.w/2 - tsrc.w/2;
-    tdest.y = dest.y + dest.h/2 - tsrc.h/2;
+    tdest.x = xPos - tsrc.w/2;
+    tdest.y = yPos - tsrc.h/2;
+
+    if(skin == nullptr)return;
     if(dest.w <tdest.w + 20)dest.w = tdest.w + 20;
     if(dest.h <tdest.h + 20)dest.h = tdest.h + 20;
 
 }
 
-void Block:: SetPos(int x, int y)
+void Block:: SetPos(short x, short y)
 {
-    dest.x = x - dest.w/2;
-    dest.y = y - dest.h/2;
-    if(type == "BG")dest.x = 0, dest.y =0;
-    if(Text!="")
+    xPos = x;
+    yPos = y;
+    if(skin != nullptr)
     {
-        tdest.x = dest.x + dest.w/2 - tsrc.w/2;
-        tdest.y = dest.y + dest.h/2 - tsrc.h/2;
+        dest.x = x - dest.w/2;
+        dest.y = y - dest.h/2;
+    }
+    if(text != nullptr)
+    {
+        tdest.x = xPos - tsrc.w/2;
+        tdest.y = yPos - tsrc.h/2;
     }
 }
 
-void Block:: SetScale(int sc)
+void Block:: SetScale(short sc)
 {
     scale = sc;
 }

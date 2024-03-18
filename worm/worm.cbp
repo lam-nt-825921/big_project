@@ -32,11 +32,13 @@
 			<Add option="-Wall" />
 			<Add directory="C:/Users/Hello/Documents/GitHub/big_project/Dev/SDL2/include/SDL2" />
 			<Add directory="C:/Users/Hello/Documents/GitHub/big_project/Dev/TTF/include/SDL2" />
+			<Add directory="C:/Users/Hello/Documents/GitHub/big_project/Dev/Image/include/SDL2" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image" />
 			<Add directory="C:/Users/Hello/Documents/GitHub/big_project/Dev/SDL2/lib" />
 			<Add directory="C:/Users/Hello/Documents/GitHub/big_project/Dev/TTF/lib" />
+			<Add directory="C:/Users/Hello/Documents/GitHub/big_project/Dev/Image/lib" />
 		</Linker>
 		<Unit filename="Block.cpp" />
 		<Unit filename="Block.h" />
@@ -54,7 +56,6 @@
 		<Unit filename="bullet.h" />
 		<Unit filename="enemy.cpp" />
 		<Unit filename="enemy.h" />
-		<Unit filename="level1.txt" />
 		<Unit filename="main.cpp" />
 		<Unit filename="worm.cpp" />
 		<Unit filename="worm.h" />

@@ -6,7 +6,7 @@ worm::worm()
     Game::worms.push_back(this);
 }
 
-void worm:: init(int x, const char* path, double sp, double pw ,int fr, int ms , int num )
+void worm:: init(short x, const char* path, float sp, float pw ,short fr, short ms , short num ,short slmt)
 {
     while(x--)
     {
@@ -15,6 +15,7 @@ void worm:: init(int x, const char* path, double sp, double pw ,int fr, int ms ,
         listBullet.back()->SetAni(path,fr,ms,num);
         listBullet.back()->SetSpeed(sp);
         listBullet.back()->SetPower(pw);
+        listBullet.back()->SetNumAtack(slmt);
 
     }
 }
@@ -39,25 +40,34 @@ void worm:: input()
 
     if(Window::event.type == SDL_MOUSEBUTTONDOWN)
     {
-        int x = Window::event.button.x ;
-        int y = Window::event.button.y;
-        int j = (x - 80) / 60;
-        int k = (800 - y) / 64;
+        short x = Window::event.button.x ;
+        short y = Window::event.button.y;
+        short j = (x - 80) / 60;
+        short k = (800 - y) / 64;
         x = 80 + j*60 + (60 - width)/2;
         y = 800 - (k+1)*64 + (64 - height)/2;
         if(isTake == true)
         {
-            if(x >= 140)
+            if(x >= 140 && y > 32 && y < 800-64 )
             {
-                Col = (x - 140)/60;
-                SetDest_x(x);
-                SetDest_y(y);
-                isTake = false;
-                isFree = false;
-                SetStop(false);
-                lastAttack = timerAttack;
+                if(Game::wormMap[j-1][k-1]==0)
+                {
+                    Col = j-1;
+                    Row = k-1;
+                    Game::wormMap[Col][Row]++;
+                    SetDest_x(x);
+                    SetDest_y(y);
+                    isTake = false;
+                    isFree = false;
+                    SetStop(false);
+                    lastAttack = timerAttack;
+                }
             }
-            else Erase();
+            else
+            {
+                Game::money += Cost;
+                Erase();
+            }
         }
     }
 
@@ -75,17 +85,45 @@ void worm:: input()
 
 }
 
-void worm:: update(int x,int y)
+void worm:: update(short x,short y)
 {
     if(isFree == true)return;
-    if(Game::onGround[Col] > 0 && Game::onGround[Col] < (GetDest().y) &&/// has enemy on lane
+    if(listBullet.size() == 0)
+    {
+
+        if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP)
+        {
+            SetAct(1);
+            Game::money+=Cost;
+            timerSpawn = timerAttack;
+            lastAttack = timerAttack;
+        }
+        else if((1000.0/Game::FPS)*(timerAttack - timerSpawn) >= 1000)
+        {
+            SetAct(0);
+        }
+
+    }
+    else if(Game::onGround[Col] > 0 && Game::onGround[Col] < (GetDest().y) &&/// has enemy on lane
        (1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP)/// ready bullet
     {
+        auto it = listBullet.begin();
+        while (it != listBullet.end())
+        {
+            if ((*it)-> IsExist() == false)
+            {
+                delete (*it);
+                it = listBullet.erase(it);
+            }
+            else it++;
+        }
+        bool ok = false;
         for(auto& b : listBullet)if(!b->isCreated())
         {
             b->spawn(GetDest().x + (GetDest().w - b->GetDest().w)/2, GetDest().y - b->GetDest().h);
             break;
         }
+
         lastAttack = timerAttack;
     }
     for(auto& b : listBullet)if(b->isCreated())b->update(x,y);
@@ -98,12 +136,12 @@ void worm:: render()
    // for(auto& b : listBullet)b->render();
 }
 
-void worm:: SetASP(int x)
+void worm:: SetASP(short x)
 {
     ASP = x;
 }
 
-void worm:: SetHp(int x)
+void worm:: SetHp(short x)
 {
     Hp = x;
 }
@@ -113,13 +151,13 @@ std::vector<Bullet*>& worm:: GetBullet()
     return listBullet;
 }
 
-void worm:: SetPos(int x, int y)
+void worm:: SetPos(short x, short y)
 {
     SetDest_x(x);
     SetDest_y(y);
 }
 
-void worm::beAtacked(int dame)
+void worm::beAtacked(short dame)
 {
     Hp-=dame;
     if(Hp<0)Erase();
@@ -129,6 +167,7 @@ void worm::beAtacked(int dame)
 bool worm:: Erase()
 {
     isExist = false;
+    Game::wormMap[Col][Row]--;
     for(auto& b:listBullet)b->Erase();
     listBullet.clear();
 }

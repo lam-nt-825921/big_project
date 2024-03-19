@@ -5,6 +5,7 @@ SDL_Color TextureManager:: color = {255,255,255};
 
 void TextureManager:: SetSize(short x)
 {
+    TTF_CloseFont(font);
     font = TTF_OpenFont("font/font.ttf",x);
 }
 

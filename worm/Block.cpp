@@ -84,6 +84,7 @@ void Block:: render()
 
 void Block:: SetSkin(const char* path)
 {
+    SDL_DestroyTexture(skin);
     skin = TextureManager::LoadTexture(path,src);
     if(skin == nullptr)return;
     dest.x = xPos - dest.w/2;
@@ -98,6 +99,7 @@ void Block:: SetText(std::string path,short sz)
 {
     Text = path;
     TextureManager::SetSize(sz);
+    SDL_DestroyTexture(text);
     text = TextureManager::LoadTextTexture(Text.c_str(),tsrc);
 
     if(text == nullptr)return;

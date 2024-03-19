@@ -91,7 +91,7 @@ bool Game::Init()
         blocks->AddTag(false,"Time : "+std::to_string(Time)+" s","game time",NULL,18);
         blocks->tags.back()->SetPos(65, 150);
     }
-///---- Game Start --------
+//---- Game Start --------
     isRunning = true;
     return isRunning;
 }

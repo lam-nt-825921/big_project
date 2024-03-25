@@ -50,18 +50,37 @@ void worm:: input()
         {
             if(x >= 140 && y > 32 && y < 800-64 )
             {
-                if(Game::wormMap[j-1][k-1]==0)
+                if(Game::wormMap[j-1][k-1]==nullptr)
                 {
-                    Col = j-1;
-                    Row = k-1;
-                    Game::wormMap[Col][Row]++;
-                    SetDest_x(x);
-                    SetDest_y(y);
-                    isTake = false;
-                    isFree = false;
-                    SetStop(false);
-                    lastAttack = timerAttack;
+                    if(type == 5)
+                    {
+                        Erase();
+                    }
+                    else
+                    {
+                        Col = j-1;
+                        Row = k-1;
+                        Game::wormMap[Col][Row] = this;
+                        SetDest_x(x);
+                        SetDest_y(y);
+                        isTake = false;
+                        isFree = false;
+                        SetStop(false);
+                        lastAttack = timerAttack;
+                    }
                 }
+                else if(type == 4 && Game::wormMap[j-1][k-1]->type == 4)
+                {
+                    Game::wormMap[j-1][k-1]->SetHp(rHp);
+                    Erase();
+                }
+                else if(type == 5)
+                {
+                    Game::wormMap[j-1][k-1]->Erase();
+                    Erase();
+                }
+
+
             }
             else
             {
@@ -88,9 +107,16 @@ void worm:: input()
 void worm:: update(short x,short y)
 {
     if(isFree == true)return;
-    if(listBullet.size() == 0)
+    if(type == 3 || type == 4)
     {
 
+        if(type == 4)
+        {
+
+            if(Hp<rHp/2)SetAct(1);
+            else SetAct(0);
+            return;
+        }
         if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP)
         {
             SetAct(1);
@@ -143,7 +169,7 @@ void worm:: SetASP(short x)
 
 void worm:: SetHp(short x)
 {
-    Hp = x;
+    Hp = rHp = x;
 }
 
 std::vector<Bullet*>& worm:: GetBullet()
@@ -167,7 +193,7 @@ void worm::beAtacked(short dame)
 bool worm:: Erase()
 {
     isExist = false;
-    Game::wormMap[Col][Row]--;
+    if(Col<10 && Row<10)Game::wormMap[Col][Row]=nullptr;
     for(auto& b:listBullet)b->Erase();
     listBullet.clear();
 }

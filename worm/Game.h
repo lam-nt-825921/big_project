@@ -40,7 +40,7 @@ public:
     std::vector<std::pair<float, short> > spawn;
 
     static int FPS;
-    static short wormMap[6][11];
+    static worm* wormMap[6][11];
     static short onGround[6];
     static int timer;
     static short money;

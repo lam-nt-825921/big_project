@@ -8,6 +8,9 @@
 
 class Block
 {
+private:
+    std::string UnchosedSkin = "image/Board.bmp";
+    std::string ChosedSkin = "image/BoardChosed.bmp";
 public:
 
     SDL_Rect src,dest,tsrc,tdest;
@@ -21,8 +24,7 @@ public:
     short scale = 1;
     short xPos = 0,yPos = 0;
 
-    char* UnchosedSkin = "image/Board.bmp";
-    char* ChosedSkin = "image/BoardChosed.bmp";
+
 
     Block();
     ~Block();

@@ -17,34 +17,55 @@ Block:: ~Block()
 void Block:: init(bool Cch,const char* path)
 {
     CanChose = Cch;
+    if(path != NULL)
+    {
+        UnchosedSkin = const_cast<char*>(path);
+        ChosedSkin = "";
+        for(int i = 0, n = strlen(path)-4; i<n; i++)ChosedSkin+=path[i];
+        ChosedSkin += "Chosed.bmp";
+    }
+
+
     SetSkin(path);
 }
 
 void Block::init(bool Cch, const char* path, std::string T,short sz)
 {
+
     CanChose = Cch;
+    if(path != NULL)
+    {
+        UnchosedSkin = const_cast<char*>(path);
+        ChosedSkin = "";
+        for(int i = 0, n = strlen(path)-4; i<n; i++)ChosedSkin+=path[i];
+        ChosedSkin += "Chosed.bmp";
+    }
+
     SetSkin(path);
     SetText(T,sz);
+
 }
 
 void Block:: update()
 {
+
     if(CanChose == false)return;
     switch(Window::event.type)
     {
 
     case SDL_MOUSEMOTION:
         {
+
             SDL_Rect pos = {Window::event.motion.x,Window::event.motion.y,1,1};
             if(!touch && Collision(dest,pos))
             {
                 touch = true;
-                SetSkin(ChosedSkin);
+                SetSkin(ChosedSkin.c_str());
             }
             if(touch && !Collision(dest,pos))
             {
                 touch = false;
-                SetSkin(UnchosedSkin);
+                SetSkin(UnchosedSkin.c_str());
             }
 
         }
@@ -55,12 +76,12 @@ void Block:: update()
             if(!touch && Collision(dest,pos))
             {
                 touch = true;
-                SetSkin(ChosedSkin);
+                SetSkin(ChosedSkin.c_str());
             }
             if(touch && !Collision(dest,pos))
             {
                 touch = false;
-                SetSkin(UnchosedSkin);
+                SetSkin(UnchosedSkin.c_str());
             }
             if(touch)
             {
@@ -115,6 +136,7 @@ void Block:: SetText(std::string path,short sz)
 
 void Block:: SetPos(short x, short y)
 {
+
     xPos = x;
     yPos = y;
     if(skin != nullptr)

@@ -8,8 +8,9 @@ class worm: public Object
 private:
     short ASP = 1000;
     short Hp = 1000;
-    short Col;
-    short Row;
+    short rHp;
+    short Col = 10;
+    short Row = 10;
 
     int lastAttack = 0;
     int timerAttack = 0;
@@ -22,6 +23,8 @@ private:
 public:
 
     short Cost = 100;
+    short type;
+
 
     worm();
 

@@ -43,6 +43,7 @@ SDL_Texture* TextureManager:: LoadTexture( const char* path, short &W,short &H, 
 SDL_Texture* TextureManager:: LoadTexture( const char* path,SDL_Rect& src)
 {
     if(path == NULL)return nullptr;
+
     SDL_Surface* tmpSurface = SDL_LoadBMP(path);
     src = {0,0,tmpSurface->w,tmpSurface->h};
     SDL_Texture* tex = SDL_CreateTextureFromSurface(Window::renderer,tmpSurface);

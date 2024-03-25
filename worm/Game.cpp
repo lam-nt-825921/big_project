@@ -14,7 +14,7 @@ int Game:: FPS = 60;
 short Game:: money = 150;
 int Game::timer = 0;
 short Game::onGround[6];
-short Game:: wormMap[6][11];
+worm* Game:: wormMap[6][11];
 bool Game:: isRunning = false;
 bool Game::Win = false;
 std::vector<Bullet*> Game:: wormBullet;
@@ -74,21 +74,27 @@ bool Game::Init()
 
     {/// init Block
         blocks = new Menu;
-        blocks->AddTag(true,"n_worm 75$","spawn n_worm","image/Board.bmp");
+        blocks->AddTag(true,"n_worm 75$","spawn n_worm","image/n_wormBoard.bmp");
         blocks->tags.back()->SetPos(65,700);
 
-        blocks->AddTag(true,"g_worm 175$","spawn g_worm","image/Board.bmp");
+        blocks->AddTag(true,"g_worm 175$","spawn g_worm","image/g_wormBoard.bmp");
         blocks->tags.back()->SetPos(65,600);
 
-        blocks->AddTag(true,"m_worm 25$","spawn m_worm","image/Board.bmp");
+        blocks->AddTag(true,"m_worm 25$","spawn m_worm","image/m_wormBoard.bmp");
         blocks->tags.back()->SetPos(65,500);
 
-        blocks->AddTag(false,"Money : "+ std::to_string(money)+"$","game money",NULL);
+        blocks->AddTag(true,"d_worm 50$","spawn d_worm","image/d_wormBoard.bmp");
+        blocks->tags.back()->SetPos(65,400);
+
+        blocks->AddTag(true,"e_worm 0$","spawn e_worm","image/e_wormBoard.bmp");
+        blocks->tags.back()->SetPos(65,200);
+
+        blocks->AddTag(false,"Money : "+ std::to_string(money)+"$","game money",NULL,12);
         blocks->tags.back()->SetPos(65,50);
 
         TimeStart = SDL_GetTicks();
         Time = (SDL_GetTicks() - TimeStart)/1000;
-        blocks->AddTag(false,"Time : "+std::to_string(Time)+" s","game time",NULL,18);
+        blocks->AddTag(false,"Time : "+std::to_string(Time)+" s","game time",NULL,12);
         blocks->tags.back()->SetPos(65, 150);
     }
 //---- Game Start --------
@@ -246,6 +252,7 @@ void Game::Update()
                         worm* w = new worm;
                         money -= 75;
                         w->Cost = 75;
+                        w->type = 1;
                         w->SetAni("image/n_worm.bmp",4,120);
                         w->init(2,"image/bullet.bmp",0.2,100,3,150,1,1);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
                         w->SetPos(Window::event.button.x, Window::event.button.y);
@@ -263,8 +270,9 @@ void Game::Update()
                         worm* w = new worm;
                         money -= 175;
                         w->Cost = 175;
+                        w->type = 2;
                         w->SetAni("image/Green_worm.bmp",6,120);//frames, msPF
-                        w->init(4,"image/burn_bullet.bmp",0.15,5,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
+                        w->init(4,"image/burn_bullet.bmp",0.15,2,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
                         w->SetPos(Window::event.button.x, Window::event.button.y);
                         w->SetASP(1500);
                         w->SetHp(1000);
@@ -280,17 +288,54 @@ void Game::Update()
                         worm* w = new worm;
                         money -= 25;
                         w->Cost = 25;
+                        w->type = 3;
                         w->SetAni("image/m_worm.bmp",6,120,2);//frames, msPF
                         //w->init(4,"image/burn_bullet.bmp",0.15,5,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
                         w->SetPos(Window::event.button.x, Window::event.button.y);
-                        w->SetASP(8000);
+                        w->SetASP(10000);
                         w->SetHp(1000);
+                    }
+                }
+            }
+            else if(b->type == "spawn d_worm")///spawn worm type 4
+            {
+                if(b->isChosed && money >= 50)
+                {
+                    if(worms.empty() ||worms.back()->GetFree()==false)
+                    {
+                        worm* w = new worm;
+                        money -= 50;
+                        w->Cost = 50;
+                        w->type = 4;
+                        w->SetAni("image/d_worm.bmp",6,120,2);//frames, msPF
+                        //w->init(4,"image/burn_bullet.bmp",0.15,5,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
+                        w->SetPos(Window::event.button.x, Window::event.button.y);
+                        w->SetASP(0);
+                        w->SetHp(8000);
+                    }
+                }
+            }
+            else if(b->type == "spawn e_worm")///spawn worm type 5
+            {
+                if(b->isChosed)
+                {
+                    if(worms.empty() ||worms.back()->GetFree()==false)
+                    {
+                        worm* w = new worm;
+                        w->Cost = 0;
+                        w->type = 5;
+                        w->SetAni("image/e_worm.bmp",6,120,1);//frames, msPF
+                        //w->init(4,"image/burn_bullet.bmp",0.15,5,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
+                        w->SetPos(Window::event.button.x, Window::event.button.y);
+                        w->SetASP(0);
+                        w->SetHp(1);
                     }
                 }
             }
             else if(b->type == "game money")///update money
             {
-                b->SetText("Money : " + std::to_string(money),14);
+                if(money < 1000)b->SetText("Money : " + std::to_string(money),12);
+                else b->SetText("Money : 999+",12);
             }
             else if(b->type == "game time")///update time
             {
@@ -356,7 +401,7 @@ void Game::Update()
                         cnt--;
                         if(cnt <= 0)break;
                     }
-//                    if(cnt <= 0)(*it)->del();
+                    if(cnt <= 0)(*it)->del();
                 }
                 ++it;
             }

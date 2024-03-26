@@ -1,7 +1,8 @@
 # depslib dependency file v1.0
-1710765080 source:c:\users\hello\documents\github\big_project\worm\main.cpp
+1711458017 source:c:\users\hello\documents\github\big_project\worm\main.cpp
 	"Game.h"
 	"Menu.h"
+	"Setting.h"
 
 1706832967 c:\users\hello\documents\github\big_project\dev\sdl2\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -409,7 +410,7 @@
 1711264144 source:c:\users\hello\documents\github\big_project\worm\texturemanager.cpp
 	"TextureManager.h"
 
-1711275028 c:\users\hello\documents\github\big_project\worm\game.h
+1711476419 c:\users\hello\documents\github\big_project\worm\game.h
 	<SDL.h>
 	<iostream>
 	"TextureManager.h"
@@ -423,7 +424,7 @@
 	"enemy.h"
 	"Block.h"
 
-1711333488 source:c:\users\hello\documents\github\big_project\worm\game.cpp
+1711475959 source:c:\users\hello\documents\github\big_project\worm\game.cpp
 	"Game.h"
 	"Vector2D.h"
 	<string>
@@ -433,12 +434,13 @@
 	<time.h>
 	"Menu.h"
 	<SDL_image.h>
+	"Setting.h"
 
-1711335568 source:c:\users\hello\documents\github\big_project\worm\block.cpp
+1711459900 source:c:\users\hello\documents\github\big_project\worm\block.cpp
 	"Block.h"
 	"Menu.h"
 
-1711263440 c:\users\hello\documents\github\big_project\worm\block.h
+1711435670 c:\users\hello\documents\github\big_project\worm\block.h
 	<SDL.h>
 	<iostream>
 	"TextureManager.h"
@@ -452,7 +454,7 @@
 1710173908 source:c:\users\hello\documents\github\big_project\worm\vector2d.cpp
 	"Vector2D.h"
 
-1710764887 c:\users\hello\documents\github\big_project\worm\menu.h
+1711373626 c:\users\hello\documents\github\big_project\worm\menu.h
 	<vector>
 	"Block.h"
 
@@ -473,12 +475,12 @@
 	"Object.h"
 	"Vector2D.h"
 
-1711275347 c:\users\hello\documents\github\big_project\worm\worm.h
+1711474375 c:\users\hello\documents\github\big_project\worm\worm.h
 	"Object.h"
 	"bullet.h"
 	<vector>
 
-1711282614 source:c:\users\hello\documents\github\big_project\worm\worm.cpp
+1711476106 source:c:\users\hello\documents\github\big_project\worm\worm.cpp
 	"worm.h"
 	"game.h"
 
@@ -494,4 +496,12 @@
 	"SDL_version.h"
 	"begin_code.h"
 	"close_code.h"
+
+1711471591 c:\users\hello\documents\github\big_project\worm\setting.h
+	<SDL.h>
+	"Block.h"
+
+1711471458 source:c:\users\hello\documents\github\big_project\worm\setting.cpp
+	"Setting.h"
+	"Game.h"
 

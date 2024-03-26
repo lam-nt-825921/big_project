@@ -1,0 +1,10 @@
+3
+Money
+money start
+0 image/SettingBoard.bmp 250 200 12
++ 
+next money
+1 image/NextBoard.bmp 350 200 12
+ -
+prev money
+1 image/PrevBoard.bmp 150 200 12

@@ -39,15 +39,29 @@ void Block::init(bool Cch, const char* path, std::string T,short sz)
         ChosedSkin = "";
         for(int i = 0, n = strlen(path)-4; i<n; i++)ChosedSkin+=path[i];
         ChosedSkin += "Chosed.bmp";
+        SetSkin(path);
+        if(skin == nullptr)
+        {
+            std::cout<<"Block load skin false\n";
+        }
     }
-
-    SetSkin(path);
     SetText(T,sz);
+    if(T != "Null" && T != "" &&text == nullptr)std::cout<<"Block load Text false\n";
 
 }
 
 void Block:: update()
 {
+    if(skin != nullptr)
+    {
+        dest.x = xPos - dest.w/2;
+        dest.y = yPos - dest.h/2;
+    }
+    if(text != nullptr)
+    {
+        tdest.x = xPos - tsrc.w/2;
+        tdest.y = yPos - tsrc.h/2;
+    }
 
     if(CanChose == false)return;
     switch(Window::event.type)
@@ -118,7 +132,15 @@ void Block:: SetSkin(const char* path)
 
 void Block:: SetText(std::string path,short sz)
 {
+    if(sz <= 0)sz = rSize;
+    else rSize = sz;
+    if(path == "Null")
+    {
+        text == nullptr;
+        return;
+    }
     Text = path;
+
     TextureManager::SetSize(sz);
     SDL_DestroyTexture(text);
     text = TextureManager::LoadTextTexture(Text.c_str(),tsrc);
@@ -130,7 +152,7 @@ void Block:: SetText(std::string path,short sz)
 
     if(skin == nullptr)return;
     if(dest.w <tdest.w + 20)dest.w = tdest.w + 20;
-    if(dest.h <tdest.h + 20)dest.h = tdest.h + 20;
+   // if(dest.h <tdest.h + 20)dest.h = tdest.h + 20;
 
 }
 
@@ -139,21 +161,17 @@ void Block:: SetPos(short x, short y)
 
     xPos = x;
     yPos = y;
-    if(skin != nullptr)
-    {
-        dest.x = x - dest.w/2;
-        dest.y = y - dest.h/2;
-    }
-    if(text != nullptr)
-    {
-        tdest.x = xPos - tsrc.w/2;
-        tdest.y = yPos - tsrc.h/2;
-    }
+
 }
 
 void Block:: SetScale(short sc)
 {
     scale = sc;
+}
+
+void Block::upPos(short x)
+{
+    yPos+=x;
 }
 ///-------------------------------------------------------------------------------------
 

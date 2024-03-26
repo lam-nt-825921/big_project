@@ -22,6 +22,7 @@ public:
     bool touch = false;
     bool isChosed = false;
     short scale = 1;
+    short rSize = 15;
     short xPos = 0,yPos = 0;
 
 
@@ -30,7 +31,7 @@ public:
     ~Block();
 
     void init(bool Cch,const char* path);
-    void init(bool Cch, const char* path, std::string T,short sz = 15);
+    void init(bool Cch, const char* path, std::string T,short sz = -1);
     void update();
     void render();
 
@@ -38,6 +39,8 @@ public:
     void SetText(std::string path,short sz =15);
     void SetPos(short x, short y);
     void SetScale(short sc);
+
+    void upPos(short x);
 
     SDL_Rect Get();
 };

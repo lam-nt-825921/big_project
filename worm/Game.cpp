@@ -7,6 +7,7 @@
 #include <time.h>
 #include "Menu.h"
 #include <SDL_image.h>
+#include "Setting.h"
 
 
 ///static declare
@@ -17,6 +18,7 @@ short Game::onGround[6];
 worm* Game:: wormMap[6][11];
 bool Game:: isRunning = false;
 bool Game::Win = false;
+std::string Game::Level = "text/level0.txt";
 std::vector<Bullet*> Game:: wormBullet;
 std::vector<worm*> Game:: worms;
 std::vector<enemy*> Game:: enemys;
@@ -38,22 +40,57 @@ Game::~Game()
 
 }
 
+bool Game::ChoseLevel()
+{
+    Setting* setting = new Setting;
+    setting->init("text/GameLevel.txt");
+    while(setting->isRunning)
+    {
+        setting->input();
+        setting->update();
+        setting->render();
+    }
+    setting->close();
+    delete setting;
+    if(isRunning == true)
+    {
+        isRunning = false;
+        return true;
+    }
+    return false;
+}
+
 bool Game::Init()
 {
 
     Frame = 0;
-    money = 150;
     Win = false;
+
     srand(time(NULL));
+
     for(short i=0;i<6;i++)onGround[i] = 0;
+
     for(short i=0;i<6;i++)
-        for(short j= 0; j< 11;j ++)wormMap[i][j]=0;
+        for(short j= 0; j< 11;j ++)wormMap[i][j] = nullptr;
+    for(short i =0; i<6;i++)
+    {
+        worm* w = new worm;
+        w->Cost = 0;
+        w->type = 0;
+        w->SetAni("image/Clear_worm.bmp",6,120,2);
+        w->SetFree(false);
+        w->SetStop(false);
+        short x = 80 + (i+1)*60 + (60 - w->width)/2;
+        short y = 800 - 64 + (64 - w->height)/2;
+        w->SetPos(x,y);
+    }
 
     {/// load level
         last_spawn = 0;
 
-        std::ifstream getEnemys("text/level2.txt"); // Open file for reading
+        std::ifstream getEnemys(Level.c_str()); // Open file for reading
 
+        getEnemys>>money;
         getEnemys>>numEnemys;
         spawn.resize(numEnemys);
         for(short i=numEnemys ;i--;)
@@ -99,7 +136,7 @@ bool Game::Init()
     }
 //---- Game Start --------
     isRunning = true;
-    return isRunning;
+    return true;
 }
 
 void Game::Input()
@@ -334,12 +371,12 @@ void Game::Update()
             }
             else if(b->type == "game money")///update money
             {
-                if(money < 1000)b->SetText("Money : " + std::to_string(money),12);
-                else b->SetText("Money : 999+",12);
+                if(money < 1000)b->SetText("Money : " + std::to_string(money));
+                else b->SetText("Money : 999+");
             }
             else if(b->type == "game time")///update time
             {
-                b->SetText("Time : "+std::to_string(Time)+" s",18);
+                b->SetText("Time : "+std::to_string(Time)+" s");
 
             }
         }
@@ -366,16 +403,29 @@ void Game::Update()
                 short cnt = (*it) -> GetNumAtack();
                 bool IsAtack = (*it) ->GetDealAtack();
                 (*it)->SetIsAtack(false);
-                for(auto& w : worms)if(cnt > 0 && w->GetFree() == false && w->Collision((*it)->GetDest()))
+                for(auto& w : worms)
                 {
-                    (*it)->SetIsAtack(true);
-                    if(IsAtack)
+                    if(w->type == 0 && w->Collision((*it)->GetDest()))
                     {
-                        w->beAtacked((*it)->GetStrong());
-                        cnt--;
+                        if(w->GetFree() == true)
+                        {
+                            (*it)->Kill();
+                        }
+                        else
+                        {
+                            w->SetFree(true);
+                        }
+                    }
+                    else if(cnt > 0 && w->GetFree() == false && w->Collision((*it)->GetDest()))
+                    {
+                        (*it)->SetIsAtack(true);
+                        if(IsAtack)
+                        {
+                            w->beAtacked((*it)->GetStrong());
+                            cnt--;
+                        }
                     }
                 }
-
                 ++it;
             }
         }
@@ -488,8 +538,12 @@ void Game::Render()
 
     if(enemys.size() == 0 && numEnemys <= 0)
     {
-        Win = true;
-        isRunning = false;
+        if(Win == false)
+        {
+            Win = true;
+            TimeWin = SDL_GetTicks();
+        }
+        else if(SDL_GetTicks()-TimeWin >= 2500)isRunning = false;
     }
 
 }
@@ -502,6 +556,8 @@ void Game::Close()
     for(auto& w: worms)delete w;
     for(auto& b: wormBullet)delete b;
     for(auto& b: blocks->tags)delete b;
+    blocks->tags.clear();
+    delete blocks;
     wormBullet.clear();
     worms.clear();
     enemys.clear();

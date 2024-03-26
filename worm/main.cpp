@@ -1,6 +1,7 @@
 
 #include "Game.h"
 #include "Menu.h"
+#include "Setting.h"
 
 
 
@@ -16,12 +17,15 @@ SDL_Event Window::event;
 int main( int argc, char* args[] )
 {
     Game* game = new Game();
+    Setting* setting = new Setting;
+
 
     Menu* menu = new Menu;
     menu->init();
     menu->listTags = true;
 
     menu->AddTag(true,"Start","Menu");
+    menu->AddTag(true,"Setting","Menu");
     menu->AddTag(true,"Exit","Menu");
 
     while(menu->isRunning)
@@ -32,43 +36,58 @@ int main( int argc, char* args[] )
         {
         case 1:
         {
-            game->Init();
-
-            int frameDelay;
-            Uint32 frameStart;
-            int frameTime;
-            while(game->isRunning)
+            if(game->ChoseLevel())
             {
-                frameDelay=1000/Game::FPS;
-                frameStart=SDL_GetTicks();
-                game->Input();
-                game->Update();
-                game->Render();
-                frameTime=SDL_GetTicks()-frameStart;
-                if(frameTime<frameDelay)
+                game->Init();
+                int frameDelay;
+                Uint32 frameStart;
+                int frameTime;
+                while(game->isRunning)
                 {
-                    SDL_Delay(frameDelay-frameTime);
+                    frameDelay=1000/Game::FPS;
+                    frameStart=SDL_GetTicks();
+                    game->Input();
+                    game->Update();
+                    game->Render();
+                    frameTime=SDL_GetTicks()-frameStart;
+                    if(frameTime<frameDelay)
+                    {
+                        SDL_Delay(frameDelay-frameTime);
+                    }
                 }
-            }
-            Block *endGame = new Block;
+                Block *endGame = new Block;
 
-            if(game->Win) endGame->init(false,"image/Board.bmp","you win",30);
-            else endGame->init(false,"image/Board.bmp","you lose",30);
-            endGame->SetPos(250,400);
-            while(true)
-            {
-                endGame->render();
-                SDL_RenderPresent(Window::renderer);
-                SDL_PollEvent(&Window::event);
-                if(Window::event.type == SDL_MOUSEBUTTONDOWN)break;
-                if(Window::event.type == SDL_KEYDOWN)break;
+                if(game->Win) endGame->init(false,"image/Board.bmp","you win",30);
+                else endGame->init(false,"image/Board.bmp","you lose",30);
+                endGame->SetPos(250,400);
+                endGame->update();
+                while(true)
+                {
+                    endGame->render();
+                    SDL_RenderPresent(Window::renderer);
+                    SDL_PollEvent(&Window::event);
+                    if(Window::event.type == SDL_MOUSEBUTTONDOWN)break;
+                    if(Window::event.type == SDL_KEYDOWN)break;
+                }
+                delete endGame;
+                game->Close();
             }
-            delete endGame;
-            game->Close();
 
         }
             break;
         case 2:
+        {
+            setting->init("text/MenuSetting.txt");
+            while(setting->isRunning)
+            {
+                setting->input();
+                setting->update();
+                setting->render();
+            }
+            setting->close();
+        }
+            break;
+        case 3:
             menu->isRunning = false;
             break;
         default:

@@ -37,6 +37,7 @@ public:
     short numEnemys;
     int Time;
     int TimeStart;
+    int TimeWin;
     std::vector<std::pair<float, short> > spawn;
 
     static int FPS;
@@ -48,6 +49,7 @@ public:
     static std::vector<Bullet*> wormBullet;
     static std::vector<worm*> worms;
     static std::vector<enemy*> enemys;
+    static std::string Level;
 
     static bool isRunning;
     static bool Win;
@@ -59,6 +61,7 @@ public:
 
     Game();
     ~Game();
+    bool ChoseLevel();
     bool Init();
     void Input();
     void Update();

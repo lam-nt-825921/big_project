@@ -40,6 +40,7 @@ public:
     void SetASP(short x);
     void SetHp(short x);
     void SetPos(short x, short y);
+    void SetFree(bool x);
 
     void beAtacked(short dame);
 

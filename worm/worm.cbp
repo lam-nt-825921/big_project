@@ -48,6 +48,8 @@
 		<Unit filename="Menu.h" />
 		<Unit filename="Object.cpp" />
 		<Unit filename="Object.h" />
+		<Unit filename="Setting.cpp" />
+		<Unit filename="Setting.h" />
 		<Unit filename="TextureManager.cpp" />
 		<Unit filename="TextureManager.h" />
 		<Unit filename="Vector2D.cpp" />

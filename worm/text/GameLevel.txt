@@ -1,0 +1,19 @@
+6
+Level 0
+Open level 0
+1 image/LevelBoard.bmp 250 200 10
+Level 1
+Open level 1
+1 image/LevelBoard.bmp 250 350 10
+Level 2
+Open level 2
+1 image/LevelBoard.bmp 250 500 10
+Level 3
+Open level 3
+1 image/LevelBoard.bmp 250 650 10
+Level 4
+Open level 4
+1 image/LevelBoard.bmp 250 800 10
+Cusstom
+Open Cusstom Level
+1 image/LevelBoard.bmp 250 950 10

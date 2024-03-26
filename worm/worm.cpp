@@ -23,6 +23,7 @@ void worm:: init(short x, const char* path, float sp, float pw ,short fr, short 
 void worm:: input()
 {
     timerAttack = Game::timer;
+    if(type == 0)return;
     if(Window::event.type == SDL_MOUSEMOTION)
     {
         if(isTake == true)
@@ -106,6 +107,17 @@ void worm:: input()
 
 void worm:: update(short x,short y)
 {
+
+    if(type == 0)
+    {
+        if(GetDest().y < -64)Erase();
+        else if(isFree == true)
+        {
+            SetAct(1);
+            SetDest({0,-10,0,0},true);
+        }
+        return;
+    }
     if(isFree == true)return;
     if(type == 3 || type == 4)
     {
@@ -181,6 +193,12 @@ void worm:: SetPos(short x, short y)
 {
     SetDest_x(x);
     SetDest_y(y);
+}
+
+void worm::SetFree(bool x)
+{
+    if(type == 0)isTake = false;
+    isFree = x;
 }
 
 void worm::beAtacked(short dame)

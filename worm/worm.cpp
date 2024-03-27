@@ -129,21 +129,21 @@ void worm:: update(short x,short y)
             else SetAct(0);
             return;
         }
-        if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP)
+        if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP*60.0/Game::FPS)
         {
             SetAct(1);
             Game::money+=Cost;
             timerSpawn = timerAttack;
             lastAttack = timerAttack;
         }
-        else if((1000.0/Game::FPS)*(timerAttack - timerSpawn) >= 1000)
+        else if((1000.0/Game::FPS)*(timerAttack - timerSpawn) >= 1000*60.0/Game::FPS)
         {
             SetAct(0);
         }
 
     }
     else if(Game::onGround[Col] > 0 && Game::onGround[Col] < (GetDest().y) &&/// has enemy on lane
-       (1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP)/// ready bullet
+       (1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP*60.0/Game::FPS)/// ready bullet
     {
         auto it = listBullet.begin();
         while (it != listBullet.end())

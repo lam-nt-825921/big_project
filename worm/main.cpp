@@ -56,9 +56,16 @@ int main( int argc, char* args[] )
                     }
                 }
                 Block *endGame = new Block;
-
-                if(game->Win) endGame->init(false,"image/Board.bmp","you win",30);
-                else endGame->init(false,"image/Board.bmp","you lose",30);
+                if(game->Win)
+                {
+                    TextureManager::SetColor(255,107,0);
+                    endGame->init(false,"image/LightBoard.bmp","you win",30);
+                }
+                else
+                {
+                    TextureManager::SetColor(0,140,0);
+                    endGame->init(false,"image/DarkBoard.bmp","you lose",30);
+                }
                 endGame->SetPos(250,400);
                 endGame->update();
                 while(true)
@@ -78,6 +85,7 @@ int main( int argc, char* args[] )
         case 2:
         {
             setting->init("text/MenuSetting.txt");
+            setting->LoadCusstom();
             while(setting->isRunning)
             {
                 setting->input();

@@ -17,6 +17,7 @@ int Game::timer = 0;
 short Game::onGround[6];
 worm* Game:: wormMap[6][11];
 bool Game:: isRunning = false;
+bool Game:: isCusstom = false;
 bool Game::Win = false;
 std::string Game::Level = "text/level0.txt";
 std::vector<Bullet*> Game:: wormBullet;
@@ -72,17 +73,43 @@ bool Game::Init()
 
     for(short i=0;i<6;i++)
         for(short j= 0; j< 11;j ++)wormMap[i][j] = nullptr;
-    for(short i =0; i<6;i++)
+    if(isCusstom == true)
+    {/// custom level setting
+        std::ifstream getCusstom("text/cusstomSetting.txt");
+        getCusstom>>money;
+        bool tmp;
+        getCusstom>>tmp;
+        if(tmp)
+        {
+            for(short i =0; i<6;i++)
+            {/// set clear worm
+                worm* w = new worm;
+                w->Cost = 0;
+                w->type = 0;
+                w->SetAni("image/Clear_worm.bmp",6,120,2);
+                w->SetFree(false);
+                w->SetStop(false);
+                short x = 80 + (i+1)*60 + (60 - w->width)/2;
+                short y = 800 - 64 + (64 - w->height)/2;
+                w->SetPos(x,y);
+            }
+        }
+        getCusstom.close();
+    }
+    else
     {
-        worm* w = new worm;
-        w->Cost = 0;
-        w->type = 0;
-        w->SetAni("image/Clear_worm.bmp",6,120,2);
-        w->SetFree(false);
-        w->SetStop(false);
-        short x = 80 + (i+1)*60 + (60 - w->width)/2;
-        short y = 800 - 64 + (64 - w->height)/2;
-        w->SetPos(x,y);
+        for(short i =0; i<6;i++)
+        {/// set clear worm
+            worm* w = new worm;
+            w->Cost = 0;
+            w->type = 0;
+            w->SetAni("image/Clear_worm.bmp",6,120,2);
+            w->SetFree(false);
+            w->SetStop(false);
+            short x = 80 + (i+1)*60 + (60 - w->width)/2;
+            short y = 800 - 64 + (64 - w->height)/2;
+            w->SetPos(x,y);
+        }
     }
 
     {/// load level
@@ -90,8 +117,9 @@ bool Game::Init()
 
         std::ifstream getEnemys(Level.c_str()); // Open file for reading
 
-        getEnemys>>money;
+        if(isCusstom == false)getEnemys>>money;
         getEnemys>>numEnemys;
+        NumEnemys = numEnemys;
         spawn.resize(numEnemys);
         for(short i=numEnemys ;i--;)
         {
@@ -111,28 +139,35 @@ bool Game::Init()
 
     {/// init Block
         blocks = new Menu;
+
+        blocks->AddTag(false,"Null","Goal Block","image/GoalBoard.bmp");
+        blocks->tags.back()->SetPos(60,115);
+
         blocks->AddTag(true,"n_worm 75$","spawn n_worm","image/n_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,700);
+        blocks->tags.back()->SetPos(65,690);
 
         blocks->AddTag(true,"g_worm 175$","spawn g_worm","image/g_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,600);
+        blocks->tags.back()->SetPos(65,610);
 
         blocks->AddTag(true,"m_worm 25$","spawn m_worm","image/m_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,500);
+        blocks->tags.back()->SetPos(65,530);
 
         blocks->AddTag(true,"d_worm 50$","spawn d_worm","image/d_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,400);
+        blocks->tags.back()->SetPos(65,450);
 
         blocks->AddTag(true,"e_worm 0$","spawn e_worm","image/e_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,200);
+        blocks->tags.back()->SetPos(65,350);
 
         blocks->AddTag(false,"Money : "+ std::to_string(money)+"$","game money",NULL,12);
-        blocks->tags.back()->SetPos(65,50);
+        blocks->tags.back()->SetPos(65,40);
 
         TimeStart = SDL_GetTicks();
         Time = (SDL_GetTicks() - TimeStart)/1000;
         blocks->AddTag(false,"Time : "+std::to_string(Time)+" s","game time",NULL,12);
-        blocks->tags.back()->SetPos(65, 150);
+        blocks->tags.back()->SetPos(65, 60);
+
+        blocks->AddTag(true,"X1","change speed","image/SpeedBoard.bmp",14);
+        blocks->tags.back()->SetPos(65, 160);
     }
 //---- Game Start --------
     isRunning = true;
@@ -379,6 +414,26 @@ void Game::Update()
                 b->SetText("Time : "+std::to_string(Time)+" s");
 
             }
+            else if(b->type == "change speed")/// change speed
+            {
+                if(b->isChosed)
+                {
+                    if(Game::FPS == 120)Game::FPS = 60;
+                    else Game::FPS = 120;
+                }
+                if(Game::FPS == 120)
+                {
+                    b->SetText("X2");
+                    b->SetSkinChosed(true);
+                    b->CanChange = false;
+                }
+                else
+                {
+                    b->SetText("X1");
+                    //b->SetSkinChosed(false);
+                    b->CanChange = true;
+                }
+            }
         }
 
     }
@@ -476,6 +531,10 @@ void Game::Render()
         {
             if(SDL_RenderDrawLine(Window::renderer,80+y*60,32,80+y*60,800-64)!=0)std::cout<<SDL_GetError()<<'\n';
         }
+        const SDL_FRect* rect = new SDL_FRect({10,110,(1.0-(numEnemys/NumEnemys))*100,10});
+        SDL_RenderFillRectF(Window::renderer,rect);
+        delete rect;
+
     }
 
     {/// render block spawn worms
@@ -551,6 +610,7 @@ void Game::Render()
 void Game::Close()
 {
 
+    isRunning = isCusstom = false;
 
     for(auto& e: enemys)delete e;
     for(auto& w: worms)delete w;

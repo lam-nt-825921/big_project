@@ -51,6 +51,11 @@ SDL_Texture* TextureManager:: LoadTexture( const char* path,SDL_Rect& src)
     return tex;
 }
 
+void TextureManager::SetColor(short x , short y, short z )
+{
+    color = {x,y,z};
+}
+
 SDL_Texture* TextureManager:: LoadTextTexture( const char* path,SDL_Rect& src)
 {
     if(path == NULL)return nullptr;
@@ -58,6 +63,7 @@ SDL_Texture* TextureManager:: LoadTextTexture( const char* path,SDL_Rect& src)
     src = {0,0,tmpSurface->w,tmpSurface->h};
     SDL_Texture* tex = SDL_CreateTextureFromSurface(Window::renderer,tmpSurface);
     SDL_FreeSurface(tmpSurface);
+    SetColor(255,255,255);
     return tex;
 
 }

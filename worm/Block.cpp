@@ -74,12 +74,12 @@ void Block:: update()
             if(!touch && Collision(dest,pos))
             {
                 touch = true;
-                SetSkin(ChosedSkin.c_str());
+                if(CanChange)SetSkin(ChosedSkin.c_str());
             }
             if(touch && !Collision(dest,pos))
             {
                 touch = false;
-                SetSkin(UnchosedSkin.c_str());
+                if(CanChange)SetSkin(UnchosedSkin.c_str());
             }
 
         }
@@ -90,12 +90,12 @@ void Block:: update()
             if(!touch && Collision(dest,pos))
             {
                 touch = true;
-                SetSkin(ChosedSkin.c_str());
+                if(CanChange)SetSkin(ChosedSkin.c_str());
             }
             if(touch && !Collision(dest,pos))
             {
                 touch = false;
-                SetSkin(UnchosedSkin.c_str());
+                if(CanChange)SetSkin(UnchosedSkin.c_str());
             }
             if(touch)
             {
@@ -154,6 +154,15 @@ void Block:: SetText(std::string path,short sz)
     if(dest.w <tdest.w + 20)dest.w = tdest.w + 20;
    // if(dest.h <tdest.h + 20)dest.h = tdest.h + 20;
 
+}
+
+void Block::SetSkinChosed(bool t)
+{
+    if(t)
+    {
+        SetSkin(ChosedSkin.c_str());
+    }
+    else SetSkin(UnchosedSkin.c_str());
 }
 
 void Block:: SetPos(short x, short y)

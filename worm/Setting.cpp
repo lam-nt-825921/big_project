@@ -1,12 +1,16 @@
 #include "Setting.h"
 #include "Game.h"
+#include "TextureManager.h"
 
+short Setting::moneyStart = 0;
+bool Setting::hasClearWorm = true;
 
-void Setting:: AddTag(bool chose,std::string Text,std::string type,const char* path, short sz)
+void Setting:: AddTag(bool chose,std::string Text,std::string type,const char* path, short sz, short x, short y, short z)
 {
     if(Text != "")
     {
         tags.push_back(new Block);
+        TextureManager::SetColor(x,y,z);
         tags.back()-> init(chose,path,Text,sz);//const char* path, std::string T,short sz
         tags.back()->type = type;
     }
@@ -57,7 +61,12 @@ void Setting:: init(const char* path)
 
 void Setting::LoadCusstom()
 {
-
+    std::ifstream getCusstom("text/cusstomSetting.txt");
+    getCusstom>>moneyStart;
+    getCusstom>>hasClearWorm;
+    getCusstom.close();
+    save = false;
+    isCusstom = true;
 }
 
 void Setting::input()
@@ -115,17 +124,38 @@ void Setting::update()
 
     for(auto&t : tags)
     {
-//        if(t->type == "money start")
-//        {
-//            Game::money
-//        }
+        if(t->type == "money start")
+        {
+            t->SetText(std::to_string(moneyStart));
+        }
+        else if(t->type == "start with clear")
+        {
+            if(hasClearWorm)t->SetText("yes");
+            else t->SetText("no");
+        }
         if(t->isChosed)
         {
             if(t->type == "back home")///go back home
             {
                 isRunning = false;
                 Game::isRunning = false;
-
+                if(save == false && isCusstom == true)SaveCusstom();
+            }
+            else if(t->type == "next money")
+            {
+                moneyStart = (moneyStart + 150)%1050;
+            }
+            else if(t->type == "prev money")
+            {
+                moneyStart = (moneyStart - 150 +1050*2)%1050;
+            }
+            else if(t->type == "change has clear" )
+            {
+                hasClearWorm = !hasClearWorm;
+            }
+            else if(t->type == "save cusstom")
+            {
+                SaveCusstom();
             }
             else if(t->type == "Open level 0")
             {
@@ -148,6 +178,14 @@ void Setting::update()
                 isRunning = false;
                 Game::isRunning = true;
             }
+            else if(t->type == "Open Cusstom Level")
+            {
+                Game::Level = "text/cusstom.txt";
+                std::cout<<"Game start with custom level\n";
+                isRunning = false;
+                Game::isCusstom = true;
+                Game::isRunning = true;
+            }
         }
     }
 
@@ -167,7 +205,11 @@ void Setting::render()
 
 void Setting::SaveCusstom()
 {
-
+    std::ofstream renCusstom("text/cusstomSetting.txt");
+    renCusstom <<moneyStart<<'\n';
+    renCusstom <<hasClearWorm<<'\n';
+    renCusstom.close();
+    save == true;
 }
 
 void Setting::close()

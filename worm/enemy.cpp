@@ -34,7 +34,7 @@ void enemy::update()
     if(isLive == false)return;
     if(isAtack)
     {
-        if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP)
+        if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP*60.0/Game::FPS)
         {
             SetAct(1);
             isDealDame = true;

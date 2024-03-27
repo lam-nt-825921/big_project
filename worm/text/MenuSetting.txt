@@ -1,4 +1,7 @@
-3
+9
+Money
+title money
+0 Null 250 170 12
 Money
 money start
 0 image/SettingBoard.bmp 250 200 12
@@ -8,3 +11,18 @@ next money
  -
 prev money
 1 image/PrevBoard.bmp 150 200 12
+Has clear worm?
+title has clear
+0 Null 250 270 12
+yes
+start with clear
+0 image/SettingBoard.bmp 250 300 12
++ 
+change has clear
+1 image/NextBoard.bmp 350 300 12
+ -
+change has clear
+1 image/PrevBoard.bmp 150 300 12
+save
+save cusstom
+0 image/SettingBoard.bmp 250 700 12

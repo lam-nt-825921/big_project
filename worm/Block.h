@@ -15,6 +15,7 @@ public:
 
     SDL_Rect src,dest,tsrc,tdest;
     bool CanChose = false;
+    bool CanChange = true;
     std::string type = "";
     std::string Text = "";
     SDL_Texture* text = nullptr;
@@ -36,6 +37,7 @@ public:
     void render();
 
     void SetSkin(const char* path);
+    void SetSkinChosed(bool t);
     void SetText(std::string path,short sz =15);
     void SetPos(short x, short y);
     void SetScale(short sc);

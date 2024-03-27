@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1711458017 source:c:\users\hello\documents\github\big_project\worm\main.cpp
+1711551075 source:c:\users\hello\documents\github\big_project\worm\main.cpp
 	"Game.h"
 	"Menu.h"
 	"Setting.h"
@@ -397,7 +397,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1710764723 c:\users\hello\documents\github\big_project\worm\texturemanager.h
+1711551702 c:\users\hello\documents\github\big_project\worm\texturemanager.h
 	<SDL_ttf.h>
 	<SDL.h>
 	"Game.h"
@@ -407,10 +407,10 @@
 	"begin_code.h"
 	"close_code.h"
 
-1711264144 source:c:\users\hello\documents\github\big_project\worm\texturemanager.cpp
+1711551784 source:c:\users\hello\documents\github\big_project\worm\texturemanager.cpp
 	"TextureManager.h"
 
-1711476419 c:\users\hello\documents\github\big_project\worm\game.h
+1711513678 c:\users\hello\documents\github\big_project\worm\game.h
 	<SDL.h>
 	<iostream>
 	"TextureManager.h"
@@ -424,7 +424,7 @@
 	"enemy.h"
 	"Block.h"
 
-1711475959 source:c:\users\hello\documents\github\big_project\worm\game.cpp
+1711547484 source:c:\users\hello\documents\github\big_project\worm\game.cpp
 	"Game.h"
 	"Vector2D.h"
 	<string>
@@ -436,11 +436,11 @@
 	<SDL_image.h>
 	"Setting.h"
 
-1711459900 source:c:\users\hello\documents\github\big_project\worm\block.cpp
+1711551631 source:c:\users\hello\documents\github\big_project\worm\block.cpp
 	"Block.h"
 	"Menu.h"
 
-1711435670 c:\users\hello\documents\github\big_project\worm\block.h
+1711551577 c:\users\hello\documents\github\big_project\worm\block.h
 	<SDL.h>
 	<iostream>
 	"TextureManager.h"
@@ -464,7 +464,7 @@
 1710764459 c:\users\hello\documents\github\big_project\worm\object.h
 	<SDL.h>
 
-1710764504 source:c:\users\hello\documents\github\big_project\worm\object.cpp
+1711545842 source:c:\users\hello\documents\github\big_project\worm\object.cpp
 	"Object.h"
 	"TextureManager.h"
 
@@ -480,11 +480,11 @@
 	"bullet.h"
 	<vector>
 
-1711476106 source:c:\users\hello\documents\github\big_project\worm\worm.cpp
+1711545803 source:c:\users\hello\documents\github\big_project\worm\worm.cpp
 	"worm.h"
 	"game.h"
 
-1710764385 source:c:\users\hello\documents\github\big_project\worm\enemy.cpp
+1711545820 source:c:\users\hello\documents\github\big_project\worm\enemy.cpp
 	"enemy.h"
 	"Game.h"
 
@@ -497,11 +497,12 @@
 	"begin_code.h"
 	"close_code.h"
 
-1711471591 c:\users\hello\documents\github\big_project\worm\setting.h
+1711551394 c:\users\hello\documents\github\big_project\worm\setting.h
 	<SDL.h>
 	"Block.h"
 
-1711471458 source:c:\users\hello\documents\github\big_project\worm\setting.cpp
+1711551673 source:c:\users\hello\documents\github\big_project\worm\setting.cpp
 	"Setting.h"
 	"Game.h"
+	"TextureManager.h"
 

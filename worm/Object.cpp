@@ -66,7 +66,7 @@ void Object:: Draw(bool x)
     if(x)
     {
     }
-    if((1000.0/Game::FPS)*(timer_change - last_change) >= msPF)
+    if((1000.0/Game::FPS)*(timer_change - last_change) >= msPF*60.0/Game::FPS)
     {
         last_change = timer_change;
         phase = (phase + 1)%frames;

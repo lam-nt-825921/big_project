@@ -35,6 +35,8 @@ public:
     short Frame;
     short last_spawn;
     short numEnemys;
+    float NumEnemys;
+
     int Time;
     int TimeStart;
     int TimeWin;
@@ -51,6 +53,7 @@ public:
     static std::vector<enemy*> enemys;
     static std::string Level;
 
+    static bool isCusstom;
     static bool isRunning;
     static bool Win;
 

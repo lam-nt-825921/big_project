@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Menu.h"
 #include "Setting.h"
-
+#include "Object.h"
 
 
 short Window:: Width = 500;
@@ -11,11 +11,16 @@ SDL_Window* Window::window = nullptr;
 SDL_Renderer* Window::renderer = nullptr;
 SDL_Event Window::event;
 
-
+std::vector<Object*>BG_Objects;
 
 
 int main( int argc, char* args[] )
 {
+
+    for(int i = 0 ;i < 10; i++)
+    {
+        BG_Objects.push_back(new Object);
+    }
     Game* game = new Game();
     Setting* setting = new Setting;
 

@@ -1,6 +1,7 @@
 #include "Menu.h"
 
 
+
 void Menu::init()
 {
 
@@ -27,6 +28,7 @@ void Menu::init()
     TextureManager::init();
     AddTag(false,"BG");
 
+
     isRunning = true;
 }
 
@@ -51,7 +53,7 @@ short Menu:: update()
     if(listTags)
     {
         x_ = 250;
-        y_ = 800;
+        y_ = 1000;
         for(short i = 0, e = tags.size()-1; i<=e; i++)if(tags[i]->CanChose)
         {
             y_-= tags[i]->dest.h + 10;

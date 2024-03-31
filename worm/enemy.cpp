@@ -63,6 +63,13 @@ void enemy::update()
 void enemy::render()
 {
     if(isLive == false)return;
+    if((1000.0/Game::FPS)*(timerAttack - timerBeAttacked) <= 3000*60.0/Game::FPS)
+    {
+        SDL_SetRenderDrawColor(Window::renderer,200,60,30,255);
+        SDL_FRect hptag = {GetDest().x, GetDest().y - 10, GetDest().w*(1.0*rHp/Hp), 5.0};
+        SDL_RenderFillRectF(Window::renderer,&hptag);
+        SDL_SetRenderDrawColor(Window::renderer,0,25,0,255);
+    }
     Draw();
 }
 
@@ -97,6 +104,7 @@ void enemy::SetDameTaken(float x)
 {
     if(armo>=0) DameTaken += x*(100.0/(100+armo));
     if(armo<0) DameTaken += x*(2.0- 100.0/(100-armo));
+    timerBeAttacked = Game::timer;
 }
 
 void enemy::SetPos(short x, short y)

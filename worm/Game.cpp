@@ -344,7 +344,7 @@ void Game::Update()
                         w->Cost = 175;
                         w->type = 2;
                         w->SetAni("image/Green_worm.bmp",6,120);//frames, msPF
-                        w->init(4,"image/burn_bullet.bmp",0.15,2,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
+                        w->init(4,"image/burn_bullet.bmp",0.15,100,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
                         w->SetPos(Window::event.button.x, Window::event.button.y);
                         w->SetASP(1500);
                         w->SetHp(1000);
@@ -379,7 +379,7 @@ void Game::Update()
                         money -= 50;
                         w->Cost = 50;
                         w->type = 4;
-                        w->SetAni("image/d_worm.bmp",6,120,2);//frames, msPF
+                        w->SetAni("image/water_worm.bmp",6,120,2);//frames, msPF
                         //w->init(4,"image/burn_bullet.bmp",0.15,5,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
                         w->SetPos(Window::event.button.x, Window::event.button.y);
                         w->SetASP(0);
@@ -499,14 +499,13 @@ void Game::Update()
                 if((*it)->isCreated())
                 {
                     ///collision with worms
-                    short cnt = (*it) -> GetNumAtack();
-                    for(auto& e : enemys)if(e->Collision((*it)->GetDest()))
+
+                    for(auto& e : enemys)if(e->Collision((*it)->GetDest()) && (*it)->CheckEnemy(e))
                     {
                         e->SetDameTaken((*it)->GetPower());
-                        cnt--;
-                        if(cnt <= 0)break;
+
                     }
-                    if(cnt <= 0)(*it)->del();
+
                 }
                 ++it;
             }

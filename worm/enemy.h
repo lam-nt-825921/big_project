@@ -11,6 +11,7 @@ private:
     int timerAttack = 0;
     int lastTakeDame = 0;
     int timerTakeDame = 0;
+    int timerBeAttacked = -5000;
     bool isLive = true;
     bool isAtack = false;
     bool isDealDame = false;

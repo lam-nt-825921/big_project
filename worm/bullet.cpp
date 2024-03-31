@@ -14,7 +14,8 @@ void Bullet:: update(short x, short y)
 {
     if(isSpawn)SetDest({short(speed*x),short(speed*y),0,0},true);
     SDL_Rect pos = GetDest();
-    if(pos.x > 500 || pos.x < 0 ||
+    if(WasDealDame.size() == numDealDame)del();
+    else if(pos.x > 500 || pos.x < 0 ||
        pos.y > 800 || pos.y < 0)del();
 }
 
@@ -23,6 +24,7 @@ void Bullet:: del()
     SetDest_x(x_spawn);
     SetDest_y(y_spawn);
     isSpawn = false;
+    WasDealDame.clear();
 }
 
 void Bullet:: render()
@@ -63,6 +65,14 @@ float Bullet::GetPower()
 short Bullet:: GetNumAtack()
 {
     return numDealDame;
+}
+
+bool Bullet:: CheckEnemy(enemy* p)
+{
+    if(WasDealDame.size() == numDealDame)return false;
+    for(auto& t : WasDealDame)if(t == p)return false;
+    WasDealDame.push_back(p);
+    return true;
 }
 
 bool Bullet:: IsExist()

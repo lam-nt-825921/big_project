@@ -425,7 +425,7 @@
 	"enemy.h"
 	"Block.h"
 
-1711877837 source:c:\users\hello\documents\github\big_project\worm\game.cpp
+1711910937 source:c:\users\hello\documents\github\big_project\worm\game.cpp
 	"Game.h"
 	"Vector2D.h"
 	<string>
@@ -462,28 +462,29 @@
 1711615087 source:c:\users\hello\documents\github\big_project\worm\menu.cpp
 	"Menu.h"
 
-1710764459 c:\users\hello\documents\github\big_project\worm\object.h
+1711909904 c:\users\hello\documents\github\big_project\worm\object.h
 	<SDL.h>
 
-1711545842 source:c:\users\hello\documents\github\big_project\worm\object.cpp
+1711909886 source:c:\users\hello\documents\github\big_project\worm\object.cpp
 	"Object.h"
 	"TextureManager.h"
 
-1711874330 source:c:\users\hello\documents\github\big_project\worm\bullet.cpp
+1711910799 source:c:\users\hello\documents\github\big_project\worm\bullet.cpp
 	"bullet.h"
+	"Game.h"
 
-1711874463 c:\users\hello\documents\github\big_project\worm\bullet.h
+1711910790 c:\users\hello\documents\github\big_project\worm\bullet.h
 	"Object.h"
 	"Vector2D.h"
 	"enemy.h"
 	<vector>
 
-1711474375 c:\users\hello\documents\github\big_project\worm\worm.h
+1711908109 c:\users\hello\documents\github\big_project\worm\worm.h
 	"Object.h"
 	"bullet.h"
 	<vector>
 
-1711545803 source:c:\users\hello\documents\github\big_project\worm\worm.cpp
+1711909597 source:c:\users\hello\documents\github\big_project\worm\worm.cpp
 	"worm.h"
 	"game.h"
 

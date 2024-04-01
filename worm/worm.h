@@ -47,4 +47,6 @@ public:
     std::vector<Bullet*>& GetBullet();
 
     bool Erase();
+
+    void SetDesAniForBullet(short ms, short Act);
 };

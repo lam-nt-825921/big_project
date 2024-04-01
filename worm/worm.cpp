@@ -20,6 +20,11 @@ void worm:: init(short x, const char* path, float sp, float pw ,short fr, short 
     }
 }
 
+void worm:: SetDesAniForBullet(short ms, short Act)
+{
+    for(auto& b : listBullet)b->setDesAni(ms,Act);
+}
+
 void worm:: input()
 {
     timerAttack = Game::timer;
@@ -119,7 +124,20 @@ void worm:: update(short x,short y)
         return;
     }
     if(isFree == true)return;
-    if(type == 3 || type == 4)
+
+    if(type == 3 || type == 6)///change face before atack
+    {
+        if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= 0.75*ASP*60.0/Game::FPS)
+        {
+            SetAct(1);
+        }
+        else if((1000.0/Game::FPS)*(timerAttack - timerSpawn) >= 1000*60.0/Game::FPS)
+        {
+            SetAct(0);
+        }
+    }
+
+    if(type == 3 || type == 4)///none spawn bullet
     {
 
         if(type == 4)
@@ -129,20 +147,20 @@ void worm:: update(short x,short y)
             else SetAct(0);
             return;
         }
-        if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP*60.0/Game::FPS)
+        if(type == 3)
         {
-            SetAct(1);
-            Game::money+=Cost;
-            timerSpawn = timerAttack;
-            lastAttack = timerAttack;
-        }
-        else if((1000.0/Game::FPS)*(timerAttack - timerSpawn) >= 1000*60.0/Game::FPS)
-        {
-            SetAct(0);
+            if((1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP*60.0/Game::FPS)
+            {
+                Game::money+=Cost;
+                lastAttack = timerAttack;
+            }
         }
 
+        return;
     }
-    else if(Game::onGround[Col] > 0 && Game::onGround[Col] < (GetDest().y) &&/// has enemy on lane
+
+
+    if(Game::onGround[Col] > 0 && Game::onGround[Col] < (GetDest().y) &&/// has enemy on lane
        (1000.0/Game::FPS)*(timerAttack - lastAttack) >= ASP*60.0/Game::FPS)/// ready bullet
     {
         auto it = listBullet.begin();

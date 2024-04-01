@@ -7,15 +7,15 @@ class Object
 private:
     SDL_Rect dest,src;
     SDL_Texture* texture;
-    short frames, msPF, numA;
-    short phase = 0, Act = 0;
+
+    short  Act = 0;
     int last_change = 0;
     int timer_change = 0;
     bool Stop = true;
 
 public:
 
-
+    short phase = 0,frames, msPF, numA;
     short height, width;
 
     Object() = default;

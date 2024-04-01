@@ -143,20 +143,25 @@ bool Game::Init()
         blocks->AddTag(false,"Null","Goal Block","image/GoalBoard.bmp");
         blocks->tags.back()->SetPos(60,115);
 
+        blocks->AddTag(true,"Wt_worm 200$","spawn water_worm","image/water_wormBoard.bmp");
+        blocks->tags.back()->SetPos(65,670);
+
         blocks->AddTag(true,"n_worm 75$","spawn n_worm","image/n_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,690);
+        blocks->tags.back()->SetPos(65,590);
 
         blocks->AddTag(true,"g_worm 175$","spawn g_worm","image/g_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,610);
+        blocks->tags.back()->SetPos(65,510);
 
         blocks->AddTag(true,"m_worm 25$","spawn m_worm","image/m_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,530);
+        blocks->tags.back()->SetPos(65,430);
 
         blocks->AddTag(true,"d_worm 50$","spawn d_worm","image/d_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,450);
+        blocks->tags.back()->SetPos(65,350);
 
         blocks->AddTag(true,"e_worm 0$","spawn e_worm","image/e_wormBoard.bmp");
-        blocks->tags.back()->SetPos(65,350);
+        blocks->tags.back()->SetPos(65,250);
+
+
 
         blocks->AddTag(false,"Money : "+ std::to_string(money)+"$","game money",NULL,12);
         blocks->tags.back()->SetPos(65,40);
@@ -351,6 +356,25 @@ void Game::Update()
                     }
                 }
             }
+            else if(b->type == "spawn water_worm")///spawn worm type 6
+            {
+                if(b->isChosed && money >= 200)
+                {
+                    if(worms.empty() ||worms.back()->GetFree()==false)
+                    {
+                        worm* w = new worm;
+                        money -= 200;
+                        w->Cost = 200;
+                        w->type = 6;
+                        w->SetAni("image/water_worm.bmp",6,120,2);//frames, msPF
+                        w->init(2,"image/water_bullet.bmp",0.1,500,10,80,2,1);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
+                        w->SetDesAniForBullet(500,1);
+                        w->SetPos(Window::event.button.x, Window::event.button.y);
+                        w->SetASP(6000);
+                        w->SetHp(1000);
+                    }
+                }
+            }
             else if(b->type == "spawn m_worm")///spawn worm type 3
             {
                 if(b->isChosed && money >= 25)
@@ -379,7 +403,7 @@ void Game::Update()
                         money -= 50;
                         w->Cost = 50;
                         w->type = 4;
-                        w->SetAni("image/water_worm.bmp",6,120,2);//frames, msPF
+                        w->SetAni("image/d_worm.bmp",6,120,2);//frames, msPF
                         //w->init(4,"image/burn_bullet.bmp",0.15,5,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
                         w->SetPos(Window::event.button.x, Window::event.button.y);
                         w->SetASP(0);

@@ -79,10 +79,12 @@ void Object:: Draw(bool x)
 
 void Object::SetAni(const char* path,short _fr, short mpf, short num )
 {
+
     frames = _fr;
     msPF = mpf;
     numA = num;
     SetTex(path);
+
 }
 
 void Object:: SetAct(short x)

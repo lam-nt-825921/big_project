@@ -15,10 +15,17 @@ private:
     short numDealDame = 1;
     std::vector<enemy*>WasDealDame;
 
+
+    int timerDes = 0;
+    short msDes = 1000,ActDes = 1;
+    short  rMsPF;
+    float rSpeed = 0.2;
+
 public:
+ bool isDesAni = false;
     void spawn(short x = -100,short y = -100);
     void update(short x = 0, short y = 0);
-    void del();
+    void del(bool t = false);
     void render();
     bool isCreated();
     bool Erase();
@@ -32,4 +39,6 @@ public:
 
     bool CheckEnemy(enemy* p);
     bool IsExist();
+
+    void setDesAni(short ms, short Act);
 };

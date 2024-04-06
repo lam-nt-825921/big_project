@@ -2,8 +2,7 @@
 #include "Game.h"
 #include "TextureManager.h"
 
-short Setting::moneyStart = 0;
-bool Setting::hasClearWorm = true;
+
 
 void Setting:: AddTag(bool chose,std::string Text,std::string type,const char* path, short sz, short x, short y, short z)
 {
@@ -62,8 +61,15 @@ void Setting:: init(const char* path)
 void Setting::LoadCusstom()
 {
     std::ifstream getCusstom("text/cusstomSetting.txt");
-    getCusstom>>moneyStart;
-    getCusstom>>hasClearWorm;
+    getCusstom>>flag;
+    getCusstom>>EPF;
+    getCusstom>>Et;
+    getCusstom>>rate;
+    getCusstom>>ESS;
+    getCusstom>>MFE;
+    getCusstom>>MS;
+    getCusstom>>MOT;
+    getCusstom>>cleaner;
     getCusstom.close();
     save = false;
     isCusstom = true;
@@ -124,14 +130,42 @@ void Setting::update()
 
     for(auto&t : tags)
     {
-        if(t->type == "money start")
+        if(t->type == "Oshow flag")
         {
-            t->SetText(std::to_string(moneyStart));
+            t->SetText(std::to_string(flag));
         }
-        else if(t->type == "start with clear")
+        else if(t->type == "Oshow EPF")
         {
-            if(hasClearWorm)t->SetText("yes");
-            else t->SetText("no");
+            t->SetText(std::to_string(EPF));
+        }
+        else if(t->type == "Oshow Et")
+        {
+            t->SetText(std::to_string(Et));
+        }
+        else if(t->type == "Oshow rate")
+        {
+            t->SetText(std::to_string(rate));
+        }
+        else if(t->type == "Oshow ESS")
+        {
+            t->SetText(std::to_string(ESS));
+        }
+        else if(t->type == "Oshow MFE")
+        {
+            t->SetText(std::to_string(MFE));
+        }
+        else if(t->type == "Oshow MS")
+        {
+            t->SetText(std::to_string(MS));
+        }
+        else if(t->type == "Oshow MOT")
+        {
+            t->SetText(std::to_string(MOT));
+        }
+        else if(t->type == "Oshow cleaner")
+        {
+            if(cleaner)t->SetText("Yes");
+            else t->SetText("No");
         }
         if(t->isChosed)
         {
@@ -141,21 +175,87 @@ void Setting::update()
                 Game::isRunning = false;
                 if(save == false && isCusstom == true)SaveCusstom();
             }
-            else if(t->type == "next money")
+             else if(t->type == "Onext flag")
             {
-                moneyStart = (moneyStart + 150)%1050;
+                flag+=1;
+                if(flag > 5)flag = 1;
             }
-            else if(t->type == "prev money")
+            else if(t->type == "Onext EPF")
             {
-                moneyStart = (moneyStart - 150 +1050*2)%1050;
+                EPF+=1;
+                if(EPF > 30)EPF = 1;
             }
-            else if(t->type == "change has clear" )
+            else if(t->type == "Onext Et")
             {
-                hasClearWorm = !hasClearWorm;
+                Et++;
+                if(Et > enemy::MaxType)Et = 1;
             }
-            else if(t->type == "save cusstom")
+            else if(t->type == "Onext rate")
             {
-                SaveCusstom();
+                rate++;
+                if(rate > 4)rate = 1;
+            }
+            else if(t->type == "Onext ESS")
+            {
+                ESS = ESS + 0.5;
+                if(ESS > 5)ESS = 2;
+            }
+            else if(t->type == "Onext MFE")
+            {
+                MFE = (MFE + 25 + 300)%300;
+            }
+            else if(t->type == "Onext MS")
+            {
+                MS = (MS + 25 + 1000)%1000;
+            }
+            else if(t->type == "Onext MOT")
+            {
+                MOT = (MOT + 25 + 300)%300;
+            }
+            else if(t->type == "Onext cleaner")
+            {
+                cleaner = !cleaner;
+            }
+            else if(t->type == "Oprev flag")
+            {
+                flag-=1;
+                if(flag < 1)flag = 5;
+            }
+            else if(t->type == "Oprev EPF")
+            {
+                EPF-=1;
+                if(EPF < 1)EPF = 30;
+            }
+            else if(t->type == "Oprev Et")
+            {
+                Et--;
+                if(Et < 1)Et = enemy::MaxType;
+            }
+            else if(t->type == "Oprev rate")
+            {
+                rate--;
+                if(rate < 1)rate = 4;
+            }
+            else if(t->type == "Oprev ESS")
+            {
+                ESS = ESS - 0.5;
+                if(ESS < 4)ESS = 5;
+            }
+            else if(t->type == "Oprev MFE")
+            {
+                MFE = (MFE - 25 + 300)%300;
+            }
+            else if(t->type == "Oprev MS")
+            {
+                MS = (MS - 25 + 1000)%1000;
+            }
+            else if(t->type == "Oprev MOT")
+            {
+                MOT = (MOT - 25 + 300)%300;
+            }
+            else if(t->type == "Oprev cleaner")
+            {
+                cleaner = !cleaner;
             }
             else if(t->type == "Open level 0")
             {
@@ -180,7 +280,7 @@ void Setting::update()
             }
             else if(t->type == "Open Cusstom Level")
             {
-                Game::Level = "text/cusstom.txt";
+                Game::Level = "text/cusstomSetting.txt";
                 std::cout<<"Game start with custom level\n";
                 isRunning = false;
                 Game::isCusstom = true;
@@ -206,8 +306,15 @@ void Setting::render()
 void Setting::SaveCusstom()
 {
     std::ofstream renCusstom("text/cusstomSetting.txt");
-    renCusstom <<moneyStart<<'\n';
-    renCusstom <<hasClearWorm<<'\n';
+    renCusstom<<flag<<' ';
+    renCusstom<<EPF<<' ';
+    renCusstom<<Et<<' ';
+    renCusstom<<rate<<' ';
+    renCusstom<<ESS<<' ';
+    renCusstom<<MFE<<' ';
+    renCusstom<<MS<<' ';
+    renCusstom<<MOT<<' ';
+    renCusstom<<cleaner;
     renCusstom.close();
     save == true;
 }

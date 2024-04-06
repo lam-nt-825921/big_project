@@ -1,6 +1,10 @@
 #include "enemy.h"
 #include "Game.h"
 
+
+short enemy::value[4] = {0, 5 , 10 , 20};
+short enemy::MaxType = 3;
+
 enemy::enemy()
 {
     Game::enemys.push_back(this);
@@ -137,7 +141,7 @@ void enemy::SetNumAtack(short a)
 
 void enemy::Kill()
 {
-    Game::money += 25;
+    Game::money += Game::moneyFromEnemy;
     Game::onGround[inCollum] = -1;
     isLive = false;
     return;

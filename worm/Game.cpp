@@ -5,12 +5,14 @@
 #include <fstream>
 #include <random>
 #include <time.h>
+#include <algorithm>
 #include "Menu.h"
 #include <SDL_image.h>
 #include "Setting.h"
 
 
 ///static declare
+short Game::moneyFromEnemy = 0;
 int Game:: FPS = 60;
 short Game:: money = 150;
 int Game::timer = 0;
@@ -61,25 +63,23 @@ bool Game::ChoseLevel()
     return false;
 }
 
-bool Game::Init()
+void Game::Spawn_enemy()
 {
 
-    Frame = 0;
-    Win = false;
+        std::ifstream getLevel(Level);
+        getLevel>>numFlags;
+        getLevel>>enemyPerFlag;
+        enemyPerFlag *= 5;
+        getLevel>>maxPowerOfEnemy;
+        getLevel>>valueForNextPower;
+        getLevel>>upSpeedPerSpawn;
+        getLevel>>moneyFromEnemy;
+        getLevel>>startMoney;
+        getLevel>>moneyByTime;
+        getLevel>>isSpawnCleaner;
+        getLevel.close();
 
-    srand(time(NULL));
-
-    for(short i=0;i<6;i++)onGround[i] = 0;
-
-    for(short i=0;i<6;i++)
-        for(short j= 0; j< 11;j ++)wormMap[i][j] = nullptr;
-    if(isCusstom == true)
-    {/// custom level setting
-        std::ifstream getCusstom("text/cusstomSetting.txt");
-        getCusstom>>money;
-        bool tmp;
-        getCusstom>>tmp;
-        if(tmp)
+        if(isSpawnCleaner)
         {
             for(short i =0; i<6;i++)
             {/// set clear worm
@@ -94,41 +94,75 @@ bool Game::Init()
                 w->SetPos(x,y);
             }
         }
-        getCusstom.close();
-    }
-    else
-    {
-        for(short i =0; i<6;i++)
-        {/// set clear worm
-            worm* w = new worm;
-            w->Cost = 0;
-            w->type = 0;
-            w->SetAni("image/Clear_worm.bmp",6,120,2);
-            w->SetFree(false);
-            w->SetStop(false);
-            short x = 80 + (i+1)*60 + (60 - w->width)/2;
-            short y = 800 - 64 + (64 - w->height)/2;
-            w->SetPos(x,y);
-        }
-    }
 
-    {/// load level
-        last_spawn = 0;
+        money = startMoney;
 
-        std::ifstream getEnemys(Level.c_str()); // Open file for reading
 
-        if(isCusstom == false)getEnemys>>money;
-        getEnemys>>numEnemys;
-        NumEnemys = numEnemys;
-        spawn.resize(numEnemys);
-        for(short i=numEnemys ;i--;)
+        spawn.resize(numFlags + enemyPerFlag*numFlags);
+
+        NumEnemys = 0;
+        short timeSpeedSpawnMin = 0;
+        maxSpeedSpawn = 15;
+        speedSpawn = maxSpeedSpawn;
+        int cnt = 0;
+        while(numFlags > 0)
         {
-            getEnemys >> spawn[i].first;
-            spawn[i].first*=1000;
-            getEnemys >> spawn[i].second;
+            cnt++;
+            int totalValue = 0;
+            spawn[NumEnemys] = std::make_pair(-cnt,0);
+            NumEnemys++;
+            for(int i = 0; i < enemyPerFlag; i++)
+            {
+                for(int power = maxPowerOfEnemy; power > 0; power--)if(power == 1 || valueForNextPower*enemy::value[power] <= totalValue)
+                {
+                    totalValue += enemy::value[power];
+                    if(power == maxPowerOfEnemy)totalValue = 0;
+                    spawn[NumEnemys] = std::make_pair(speedSpawn*1000,power);
+                    NumEnemys++;
+                    break;
+                }
+
+                speedSpawn -= upSpeedPerSpawn;
+                if(speedSpawn < maxSpeedSpawn/4)
+                {
+                    speedSpawn = maxSpeedSpawn/4;
+                    timeSpeedSpawnMin++;
+                }
+                if(timeSpeedSpawnMin > 5)
+                {
+                    timeSpeedSpawnMin = 0;
+                    speedSpawn = maxSpeedSpawn;
+                }
+                if(i>= 5)totalValue -= enemy::value[spawn[NumEnemys-6].second];
+
+            }
+            maxSpeedSpawn*=3.0/4;
+            upSpeedPerSpawn++;
+            numFlags--;
         }
-        getEnemys.close(); // Close the file
-    }
+        numEnemys = NumEnemys;
+//        std::cout<<NumEnemys<<'\n';
+//        for(int i = 0 ; i<NumEnemys; i++)
+//        {
+//            std::cout<<i<<' '<<spawn[i].first<<' '<<spawn[i].second<<'\n';
+//        }
+//        std::reverse(spawn.begin(),spawn.end());
+        last_spawn = 0;
+}
+
+bool Game::Init()
+{
+
+    Win = false;
+    Spawn_enemy();
+
+    srand(time(NULL));
+
+    for(short i=0;i<6;i++)onGround[i] = 0;
+
+    for(short i=0;i<6;i++)
+        for(short j= 0; j< 11;j ++)wormMap[i][j] = nullptr;
+
 
     {/// init back ground
         BG = new Object;
@@ -182,47 +216,74 @@ bool Game::Init()
 void Game::Input()
 {
     SDL_PollEvent(&Window::event);
-    Frame++;
-    timer = Frame;
+    timer++;
     Time = (SDL_GetTicks() - TimeStart)/1000;
+    if(timer%(int(10000/FPS)) == 0)money += moneyByTime;
 
-    if(Frame % 1500 == 0)money += 25;
 
     {///spawn enemys
+
         if(numEnemys > 0 && (1000/FPS)*(timer - last_spawn) >= spawn.back().first)
         {
             last_spawn = timer;
-            switch(spawn.back().second)
+
+
+            if(spawn.back().first < 0)
             {
-            case 1:
+                if(enemys.empty())
                 {
-                    enemy* e = new enemy;
-                    e->SetAni("image/enemy_1.bmp",6,120,2);//frames, msPF, num Act
-                    e ->init(800,0.2,100,60,1000);//hp,speed,strong,armo,Atack Speed
-                    e -> SetCol(rand()%6);
+                    if(spawn.back().first < -1)
+                    {
+                        numEnemys--;
+                        spawn.pop_back();
+                        for(int i = 1; i<= 5; i++)
+                        {
+                            if(spawn.empty() || spawn.back().first<0)break;
+
+                            (*(spawn.end()-i)).first = 100;
+                        }
+                    }
+                    else
+                    {
+                        numEnemys--;
+                        spawn.pop_back();
+                    }
                 }
-                break;
-            case 2:
-                {
-                    enemy* e = new enemy;
-                    e->SetAni("image/enemy_2.bmp",6,120,2);//frames, msPF, num Act
-                    e ->init(1000,0.1,50,200,1000);//hp,speed,strong,armo,Atack Speed
-                    e -> SetCol(rand()%6);
-                }
-                break;
-            case 3:
-                {
-                    enemy* e = new enemy;
-                    e->SetAni("image/enemy_3.bmp",6,120,2);//frames, msPF, num Act
-                    e ->init(500,0.6,150,60,800);//hp,speed,strong,armo,Atack Speed
-                    e -> SetCol(rand()%6);
-                }
-                break;
-            default:
-                break;
             }
-            spawn.pop_back();
-            numEnemys--;
+            else
+            {
+                switch(spawn.back().second)
+                {
+                case 1:
+                    {
+                        enemy* e = new enemy;
+                        e->SetAni("image/enemy_1.bmp",6,120,2);//frames, msPF, num Act
+                        e ->init(800,0.2,100,60,1000);//hp,speed,strong,armo,Atack Speed
+                        e -> SetCol(rand()%6);
+                    }
+                    break;
+                case 2:
+                    {
+                        enemy* e = new enemy;
+                        e->SetAni("image/enemy_2.bmp",6,120,2);//frames, msPF, num Act
+                        e ->init(1000,0.1,50,200,1000);//hp,speed,strong,armo,Atack Speed
+                        e -> SetCol(rand()%6);
+                    }
+                    break;
+                case 3:
+                    {
+                        enemy* e = new enemy;
+                        e->SetAni("image/enemy_3.bmp",6,120,2);//frames, msPF, num Act
+                        e ->init(500,0.6,150,60,800);//hp,speed,strong,armo,Atack Speed
+                        e -> SetCol(rand()%6);
+                    }
+                    break;
+                default:
+                    break;
+                }
+                spawn.pop_back();
+                numEnemys--;
+            }
         }
 
     }
@@ -293,6 +354,8 @@ void Game::Input()
 
 
 }
+
+
 
 void Game::Update()
 {

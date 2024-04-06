@@ -11,8 +11,15 @@ public:
     bool isCusstom = false;
     bool save = false;
 
-    static short moneyStart;
-    static bool hasClearWorm;
+    short flag;
+    short EPF;
+    short Et;
+    short rate;
+    float ESS;
+    short MFE;
+    short MS;
+    short MOT;
+    bool cleaner;
 
     void LoadCusstom();
     void SaveCusstom();

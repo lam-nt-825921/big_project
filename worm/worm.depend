@@ -411,7 +411,7 @@
 1711551784 source:c:\users\hello\documents\github\big_project\worm\texturemanager.cpp
 	"TextureManager.h"
 
-1711513678 c:\users\hello\documents\github\big_project\worm\game.h
+1712334614 c:\users\hello\documents\github\big_project\worm\game.h
 	<SDL.h>
 	<iostream>
 	"TextureManager.h"
@@ -425,7 +425,7 @@
 	"enemy.h"
 	"Block.h"
 
-1711910937 source:c:\users\hello\documents\github\big_project\worm\game.cpp
+1712373849 source:c:\users\hello\documents\github\big_project\worm\game.cpp
 	"Game.h"
 	"Vector2D.h"
 	<string>
@@ -433,6 +433,7 @@
 	<fstream>
 	<random>
 	<time.h>
+	<algorithm>
 	"Menu.h"
 	<SDL_image.h>
 	"Setting.h"
@@ -469,7 +470,7 @@
 	"Object.h"
 	"TextureManager.h"
 
-1711910799 source:c:\users\hello\documents\github\big_project\worm\bullet.cpp
+1711942159 source:c:\users\hello\documents\github\big_project\worm\bullet.cpp
 	"bullet.h"
 	"Game.h"
 
@@ -484,15 +485,15 @@
 	"bullet.h"
 	<vector>
 
-1711909597 source:c:\users\hello\documents\github\big_project\worm\worm.cpp
+1711942714 source:c:\users\hello\documents\github\big_project\worm\worm.cpp
 	"worm.h"
 	"game.h"
 
-1711875699 source:c:\users\hello\documents\github\big_project\worm\enemy.cpp
+1712373483 source:c:\users\hello\documents\github\big_project\worm\enemy.cpp
 	"enemy.h"
 	"Game.h"
 
-1711875801 c:\users\hello\documents\github\big_project\worm\enemy.h
+1712340979 c:\users\hello\documents\github\big_project\worm\enemy.h
 	"Object.h"
 
 1704144973 c:\users\hello\documents\github\big_project\dev\image\include\sdl2\sdl_image.h
@@ -501,11 +502,11 @@
 	"begin_code.h"
 	"close_code.h"
 
-1711551394 c:\users\hello\documents\github\big_project\worm\setting.h
+1712341569 c:\users\hello\documents\github\big_project\worm\setting.h
 	<SDL.h>
 	"Block.h"
 
-1711551673 source:c:\users\hello\documents\github\big_project\worm\setting.cpp
+1712342223 source:c:\users\hello\documents\github\big_project\worm\setting.cpp
 	"Setting.h"
 	"Game.h"
 	"TextureManager.h"

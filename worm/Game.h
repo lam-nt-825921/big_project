@@ -32,8 +32,20 @@ private:
 
 public:
 
-    short Frame;
+
     short last_spawn;
+    short numFlags;
+    short enemyPerFlag;
+    short maxPowerOfEnemy;
+    short valueForNextPower;
+    float speedSpawn;
+    float upSpeedPerSpawn;
+    float maxSpeedSpawn;
+    static short moneyFromEnemy;
+    short startMoney;
+    short moneyByTime;
+    bool isSpawnCleaner;
+
     short numEnemys;
     float NumEnemys;
 
@@ -65,6 +77,7 @@ public:
     Game();
     ~Game();
     bool ChoseLevel();
+    void Spawn_enemy();
     bool Init();
     void Input();
     void Update();

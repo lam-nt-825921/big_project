@@ -1,28 +1,109 @@
-9
-Money
-title money
+36
+Flags
+Otitle flag
 0 Null 250 170 12
-Money
-money start
+Flags
+Oshow flag
 0 image/SettingBoard.bmp 250 200 12
 + 
-next money
+Onext flag
 1 image/NextBoard.bmp 350 200 12
  -
-prev money
+Oprev flag
 1 image/PrevBoard.bmp 150 200 12
-Has clear worm?
-title has clear
+Enemy per flag
+Otitle EPF
 0 Null 250 270 12
-yes
-start with clear
+EPF
+Oshow EPF
 0 image/SettingBoard.bmp 250 300 12
 + 
-change has clear
+Onext EPF
 1 image/NextBoard.bmp 350 300 12
  -
-change has clear
+Oprev EPF
 1 image/PrevBoard.bmp 150 300 12
-save
-save cusstom
+Enemy types
+Otitle Et
+0 Null 250 370 12
+Et
+Oshow Et
+0 image/SettingBoard.bmp 250 400 12
++ 
+Onext Et
+1 image/NextBoard.bmp 350 400 12
+ -
+Oprev Et
+1 image/PrevBoard.bmp 150 400 12
+Enemy rate
+Otitle rate
+0 Null 250 470 12
+rate
+Oshow rate
+0 image/SettingBoard.bmp 250 500 12
++ 
+Onext rate
+1 image/NextBoard.bmp 350 500 12
+ -
+Oprev rate
+1 image/PrevBoard.bmp 150 500 12
+Enemy Spawn Speed
+Otitle ESS
+0 Null 250 570 12
+rate
+Oshow ESS
+0 image/SettingBoard.bmp 250 600 12
++ 
+Onext ESS
+1 image/NextBoard.bmp 350 600 12
+ -
+Oprev ESS
+1 image/PrevBoard.bmp 150 600 12
+Money from enemy
+Otitle MFE
+0 Null 250 670 12
+rate
+Oshow MFE
 0 image/SettingBoard.bmp 250 700 12
++ 
+Onext MFE
+1 image/NextBoard.bmp 350 700 12
+ -
+Oprev MFE
+1 image/PrevBoard.bmp 150 700 12
+Start Money
+Otitle MS
+0 Null 250 770 12
+rate
+Oshow MS
+0 image/SettingBoard.bmp 250 800 12
++ 
+Onext MS
+1 image/NextBoard.bmp 350 800 12
+ -
+Oprev MS
+1 image/PrevBoard.bmp 150 800 12
+Money over time
+Otitle MOT
+0 Null 250 870 12
+rate
+Oshow MOT
+0 image/SettingBoard.bmp 250 900 12
++ 
+Onext MOT
+1 image/NextBoard.bmp 350 900 12
+ -
+Oprev MOT
+1 image/PrevBoard.bmp 150 900 12
+Spawn Cleaner
+Otitle cleaner
+0 Null 250 970 12
+rate
+Oshow cleaner
+0 image/SettingBoard.bmp 250 1000 12
++ 
+Onext cleaner
+1 image/NextBoard.bmp 350 1000 12
+ -
+Oprev cleaner
+1 image/PrevBoard.bmp 150 1000 12

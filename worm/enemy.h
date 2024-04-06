@@ -58,5 +58,8 @@ public:
     void SetIsAtack(bool a);
     void SetNumAtack(short a);
 
+    static short value[4];
+    static short MaxType;
+
     void Kill();
 };

@@ -40,7 +40,7 @@ public:
     short valueForNextPower;
     float speedSpawn;
     float upSpeedPerSpawn;
-    float maxSpeedSpawn;
+    float    maxSpeedSpawn;
     static short moneyFromEnemy;
     short startMoney;
     short moneyByTime;
@@ -86,6 +86,7 @@ public:
 };
 
 bool Collision(const SDL_Rect &A,const SDL_Rect &B);
+bool Collision(SDL_FRect &A, SDL_FRect& B);
 
 
 

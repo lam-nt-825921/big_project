@@ -9,7 +9,7 @@
 #include "Menu.h"
 #include <SDL_image.h>
 #include "Setting.h"
-
+#include "Player.h"
 
 ///static declare
 short Game::moneyFromEnemy = 0;
@@ -30,6 +30,7 @@ std::vector<enemy*> Game:: enemys;
 Menu* blocks;
 
 Object *BG;
+Snake* slime;
 
 
 
@@ -105,23 +106,33 @@ void Game::Spawn_enemy()
         maxSpeedSpawn = 15;
         speedSpawn = maxSpeedSpawn;
         int cnt = 0;
+        short power = 1;
         while(numFlags > 0)
         {
             cnt++;
-            int totalValue = 0;
+//            int totalValue = 0;
             spawn[NumEnemys] = std::make_pair(-cnt,0);
             NumEnemys++;
             for(int i = 0; i < enemyPerFlag; i++)
             {
-                for(int power = maxPowerOfEnemy; power > 0; power--)if(power == 1 || valueForNextPower*enemy::value[power] <= totalValue)
+//                for(int power = maxPowerOfEnemy; power > 0; power--)if(power == 1 || valueForNextPower*enemy::value[power] <= totalValue)
+//                {
+//                    totalValue += enemy::value[power];
+//                    if(power == maxPowerOfEnemy)totalValue = 0;
+//                    break;
+//                }
+                if( (i%valueForNextPower)%numFlags == 0 )
                 {
-                    totalValue += enemy::value[power];
-                    if(power == maxPowerOfEnemy)totalValue = 0;
+                    power = (power+1);
+                    if(power > maxPowerOfEnemy)power = 1;
                     spawn[NumEnemys] = std::make_pair(speedSpawn*1000,power);
                     NumEnemys++;
-                    break;
                 }
-
+                else
+                {
+                    spawn[NumEnemys] = std::make_pair(speedSpawn*1000,1);
+                    NumEnemys++;
+                }
                 speedSpawn -= upSpeedPerSpawn;
                 if(speedSpawn < maxSpeedSpawn/4)
                 {
@@ -133,7 +144,7 @@ void Game::Spawn_enemy()
                     timeSpeedSpawnMin = 0;
                     speedSpawn = maxSpeedSpawn;
                 }
-                if(i>= 5)totalValue -= enemy::value[spawn[NumEnemys-6].second];
+//                if(i>= 5)totalValue -= enemy::value[spawn[NumEnemys-6].second];
 
             }
             maxSpeedSpawn*=3.0/4;
@@ -169,7 +180,8 @@ bool Game::Init()
         BG -> SetAni("image/Game_BG.bmp");
     }
 
-
+    slime = new Snake;
+    slime->init();
 
     {/// init Block
         blocks = new Menu;
@@ -359,6 +371,7 @@ void Game::Input()
 
 void Game::Update()
 {
+    slime->update();
     {/// update worms
         auto it = worms.begin();
         while (it != worms.end())
@@ -412,7 +425,7 @@ void Game::Update()
                         w->Cost = 175;
                         w->type = 2;
                         w->SetAni("image/Green_worm.bmp",6,120);//frames, msPF
-                        w->init(4,"image/burn_bullet.bmp",0.15,100,5,80,1,3);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
+                        w->init(4,"image/burn_bullet.bmp",0.15,100,5,80,1,2);//num bullet, path,bullet speed, bullet dame, bullet frames, bullet ms Per Frames
                         w->SetPos(Window::event.button.x, Window::event.button.y);
                         w->SetASP(1500);
                         w->SetHp(1000);
@@ -606,7 +619,6 @@ void Game::Render()
 {
 
     SDL_RenderClear(Window::renderer);
-
     {/// render background
         BG->Draw();
         for(short y = 1;y<=12; y++)
@@ -628,6 +640,7 @@ void Game::Render()
 
     }
 
+    slime->render();
     {/// render worms
         auto it = worms.begin();
         while (it != worms.end())
@@ -697,7 +710,7 @@ void Game::Close()
 {
 
     isRunning = isCusstom = false;
-
+    delete slime;
     for(auto& e: enemys)delete e;
     for(auto& w: worms)delete w;
     for(auto& b: wormBullet)delete b;
@@ -716,5 +729,11 @@ bool Collision(const SDL_Rect &A,const SDL_Rect &B)
             B.x > A.x + A.w ||
             B.y > A.y + A.h);
 }
-
+bool Collision(SDL_FRect &A,SDL_FRect &B)
+{
+    return !(A.x > B.x + B.w ||
+            A.y > B.y + B.h ||
+            B.x > A.x + A.w ||
+            B.y > A.y + A.h);
+}
 

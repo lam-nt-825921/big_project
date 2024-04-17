@@ -1,5 +1,6 @@
 #include "Vector2D.h"
-
+#include <algorithm>
+#include <math.h>
 Vector2D::Vector2D()
 {
     x=0.0f;
@@ -53,6 +54,19 @@ Vector2D& Vector2D::Divide(const Vector2D& vec)
 //    return *this;
 //
 //}
+
+
+double Vector2D::Val(const Vector2D &a)const
+{
+    return sqrt(a.x*a.x + a.y*a.y);
+}
+
+double Vector2D::Length(const Vector2D& a, const Vector2D& b)const
+{
+    Vector2D c = b;
+    c -=a;
+    return Val(c);
+}
 
 Vector2D& operator +(Vector2D& v1,const Vector2D& v2)
 {

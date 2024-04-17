@@ -1,6 +1,7 @@
 #include "Setting.h"
 #include "Game.h"
 #include "TextureManager.h"
+#include "Player.h"
 
 
 
@@ -19,6 +20,8 @@ void Setting:: AddTag(bool chose,std::string Text,std::string type,const char* p
 void Setting:: init(const char* path)
 {
     isRunning = true;
+
+    std::cout<<"set animation\n";
 
     AddTag(true, "Null","back home","image/BackHomeBoard.bmp");
     tags.back()->SetPos(30,30);
@@ -77,6 +80,7 @@ void Setting::LoadCusstom()
 
 void Setting::input()
 {
+
     SDL_PollEvent(&Window::event);
 
     int Min = 799;
@@ -295,6 +299,7 @@ void Setting::update()
 void Setting::render()
 {
     SDL_RenderClear(Window::renderer);
+
     for(auto& t : tags)
     {
         t->render();

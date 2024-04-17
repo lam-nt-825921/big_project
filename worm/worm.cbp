@@ -46,8 +46,12 @@
 		<Unit filename="Game.h" />
 		<Unit filename="Menu.cpp" />
 		<Unit filename="Menu.h" />
+		<Unit filename="Move.cpp" />
+		<Unit filename="Move.h" />
 		<Unit filename="Object.cpp" />
 		<Unit filename="Object.h" />
+		<Unit filename="Player.cpp" />
+		<Unit filename="Player.h" />
 		<Unit filename="Setting.cpp" />
 		<Unit filename="Setting.h" />
 		<Unit filename="TextureManager.cpp" />
